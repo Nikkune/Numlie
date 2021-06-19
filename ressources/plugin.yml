@@ -1,0 +1,6 @@
+name: Numlie
+main: fr.leguiodan.numlie.Main
+version: 0.1
+author: Nikkune
+description: Plugin for Leguiodan minecraft server.
+database: true
