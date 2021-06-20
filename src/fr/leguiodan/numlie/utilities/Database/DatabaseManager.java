@@ -2,6 +2,8 @@ package fr.leguiodan.numlie.utilities.Database;
 
 import fr.leguiodan.numlie.Main;
 import fr.leguiodan.numlie.utilities.Logger;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.sql.Connection;
@@ -18,7 +20,7 @@ public class DatabaseManager {
 	public DatabaseManager(Main main)
 	{
 		this.main = main;
-		this.dbConnection = new DbConnection(new DbCredentials("w1.webstrator.fr", "weball", "Xra24?k3", "server_database", 3306),main);
+		this.dbConnection = new DbConnection(new DbCredentials("w1.webstrator.fr", "weball", "Xra24?k3", "server_database", 3306), main);
 	}
 
 	public void close()
@@ -104,11 +106,12 @@ public class DatabaseManager {
 
 	public void createPlayerCash(Connection connection, Player player)
 	{
+		final String lang = main.filesManagers.getLanguage();
 		final PreparedStatement preparedStatement;
 		try
 		{
 			preparedStatement = connection.prepareStatement("SELECT * FROM players WHERE uuid = ?");
-			preparedStatement.setString(1,player.getUniqueId().toString());
+			preparedStatement.setString(1, player.getUniqueId().toString());
 			final ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next())
 			{
@@ -119,6 +122,19 @@ public class DatabaseManager {
 				String link_key = resultSet.getString("link_key");
 				int playtime = resultSet.getInt("playtime");
 				int guild_id = resultSet.getInt("guild_id");
+				String uuid = player.getUniqueId().toString();
+				YamlConfiguration playersYaml = main.filesManagers.getPlayersYaml();
+
+				playersYaml.set("Players." + uuid + ".xp", xp);
+				playersYaml.set("Players." + uuid + ".level", level);
+				playersYaml.set("Players." + uuid + ".money", money);
+				playersYaml.set("Players." + uuid + ".status", status);
+				playersYaml.set("Players." + uuid + ".link_key", link_key);
+				playersYaml.set("Players." + uuid + ".playtime", playtime);
+				playersYaml.set("Players." + uuid + ".guild_id", guild_id);
+
+				main.filesManagers.saveFile(playersYaml);
+				Logger.logSuccess(main.filesManagers.getMessageYaml().getString("Messages.cashCreate." + lang) + " " + player.getDisplayName() + " !");
 			}
 		} catch (SQLException e)
 		{
@@ -128,17 +144,43 @@ public class DatabaseManager {
 
 	public void updatesPlayers(Connection connection, Player player)
 	{
-
-		final PreparedStatement preparedStatement;
-		try
+		final String lang = main.filesManagers.getLanguage();
+		final String key = "Players." + player.getUniqueId().toString();
+		final ConfigurationSection playersSection = main.filesManagers.getPlayersYaml().getConfigurationSection(key);
+		if (playersSection != null)
 		{
-			preparedStatement = connection.prepareStatement("UPDATE players SET xp = ?, level = ?, money = ?, status = ?, playtime = ?, guild_id = ? WHERE uuid = ?");
-			preparedStatement.setString(7,player.getUniqueId().toString());
-
-			preparedStatement.execute();
-		} catch (SQLException e)
-		{
-			e.printStackTrace();
+			final int xp = playersSection.getInt("xp");
+			final int level = playersSection.getInt("level");
+			final int money = playersSection.getInt("money");
+			final int status = playersSection.getInt("status");
+			final int playtime = playersSection.getInt("playtime");
+			int guild_id = playersSection.getInt("guild_id");
+			Object real_id;
+			if (guild_id == 0)
+			{
+				real_id = null;
+			} else
+			{
+				real_id = guild_id;
+			}
+			String uuid = player.getUniqueId().toString();
+			final PreparedStatement preparedStatement;
+			try
+			{
+				preparedStatement = connection.prepareStatement("UPDATE players SET xp = ?, level = ?, money = ?, status = ?, playtime = ?, guild_id = ? WHERE uuid = ?");
+				preparedStatement.setInt(1, xp);
+				preparedStatement.setInt(2, level);
+				preparedStatement.setInt(3, money);
+				preparedStatement.setInt(4, status);
+				preparedStatement.setInt(5, playtime);
+				preparedStatement.setObject(6, real_id);
+				preparedStatement.setString(7, uuid);
+				preparedStatement.execute();
+				Logger.logSuccess(main.filesManagers.getMessageYaml().getString("Messages.accountUpdate." + lang) + " " + player.getDisplayName() + " !");
+			} catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 }

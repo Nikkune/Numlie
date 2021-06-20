@@ -91,6 +91,12 @@ public class FilesManagers {
 		messageYaml.set(key + "accountCreate" + lang_en, "Account created for the player :");
 		messageYaml.set(key + "accountCreate" + lang_fr, "Compte créé pour le joueur :");
 
+		messageYaml.set(key + "cashCreate" + lang_en, "Cash created for the player :");
+		messageYaml.set(key + "cashCreate" + lang_fr, "Cash créé pour le joueur :");
+
+		messageYaml.set(key + "accountUpdate" + lang_en, "Account updated for the player :");
+		messageYaml.set(key + "accountUpdate" + lang_fr, "Compte mis à jour pour le joueur :");
+
 
 		saveFile(messageYaml);
 		Logger.logSuccess("Message OK !");
