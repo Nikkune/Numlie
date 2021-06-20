@@ -1,6 +1,7 @@
 package fr.leguiodan.numlie.utilities.Database;
 
 import fr.leguiodan.numlie.Main;
+import fr.leguiodan.numlie.utilities.Logger;
 import org.bukkit.entity.Player;
 
 import java.sql.Connection;
@@ -11,11 +12,13 @@ import java.util.Random;
 import java.util.UUID;
 
 public class DatabaseManager {
+	private final Main main;
 	private final DbConnection dbConnection;
 
-	public DatabaseManager()
+	public DatabaseManager(Main main)
 	{
-		this.dbConnection = new DbConnection(new DbCredentials("w1.webstrator.fr", "weball", "Xra24?k3", "server_database", 3306));
+		this.main = main;
+		this.dbConnection = new DbConnection(new DbCredentials("w1.webstrator.fr", "weball", "Xra24?k3", "server_database", 3306),main);
 	}
 
 	public void close()
@@ -54,6 +57,7 @@ public class DatabaseManager {
 	{
 		final UUID uuid = player.getUniqueId();
 		StringBuilder link_key = new StringBuilder();
+		final String lang = main.filesManagers.getLanguage();
 		while (link_key.length() < 12)
 		{
 			final Random random = new Random();
@@ -69,6 +73,7 @@ public class DatabaseManager {
 				preparedStatement.setString(2, player.getDisplayName());
 				preparedStatement.setString(3, link_key.toString());
 				preparedStatement.execute();
+				Logger.logSuccess(main.filesManagers.getMessageYaml().getString("Messages.accountCreate." + lang) + " " + player.getDisplayName() + " !");
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
@@ -76,7 +81,7 @@ public class DatabaseManager {
 		}
 	}
 
-	public void updateStats(Connection connection, Main main)
+	public void updateStats(Connection connection)
 	{
 		final PreparedStatement preparedStatement;
 		try
@@ -91,6 +96,46 @@ public class DatabaseManager {
 				int xp_win = resultSet.getInt("xp_win");
 				main.filesManagers.statsUpdate(level, max_pv, xp_need, xp_win);
 			}
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public void createPlayerCash(Connection connection, Player player)
+	{
+		final PreparedStatement preparedStatement;
+		try
+		{
+			preparedStatement = connection.prepareStatement("SELECT * FROM players WHERE uuid = ?");
+			preparedStatement.setString(1,player.getUniqueId().toString());
+			final ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next())
+			{
+				int xp = resultSet.getInt("xp");
+				int level = resultSet.getInt("level");
+				int money = resultSet.getInt("money");
+				int status = resultSet.getInt("status");
+				String link_key = resultSet.getString("link_key");
+				int playtime = resultSet.getInt("playtime");
+				int guild_id = resultSet.getInt("guild_id");
+			}
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public void updatesPlayers(Connection connection, Player player)
+	{
+
+		final PreparedStatement preparedStatement;
+		try
+		{
+			preparedStatement = connection.prepareStatement("UPDATE players SET xp = ?, level = ?, money = ?, status = ?, playtime = ?, guild_id = ? WHERE uuid = ?");
+			preparedStatement.setString(7,player.getUniqueId().toString());
+
+			preparedStatement.execute();
 		} catch (SQLException e)
 		{
 			e.printStackTrace();

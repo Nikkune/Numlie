@@ -1,5 +1,6 @@
 package fr.leguiodan.numlie.utilities.Database;
 
+import fr.leguiodan.numlie.Main;
 import fr.leguiodan.numlie.utilities.Logger;
 
 import java.sql.Connection;
@@ -8,11 +9,13 @@ import java.sql.SQLException;
 
 public class DbConnection {
 	private final DbCredentials dbCredentials;
+	private final Main main;
 	private Connection connection;
 
-	public DbConnection(DbCredentials dbCredentials)
+	public DbConnection(DbCredentials dbCredentials, Main main)
 	{
 		this.dbCredentials = dbCredentials;
+		this.main = main;
 		this.connect();
 	}
 
@@ -23,7 +26,8 @@ public class DbConnection {
 			Class.forName("com.mysql.jdbc.Driver");
 			this.connection = DriverManager.getConnection(this.dbCredentials.toURI(), this.dbCredentials.getUser(), this.dbCredentials.getPass());
 
-			Logger.logSuccess("Successfully connected to the Database !");
+			final String lang = main.filesManagers.getLanguage();
+			Logger.logSuccess(main.filesManagers.getMessageYaml().getString("Messages.databaseOk."+lang));
 		} catch (SQLException | ClassNotFoundException e)
 		{
 			e.printStackTrace();
