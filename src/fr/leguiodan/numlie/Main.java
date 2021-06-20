@@ -1,38 +1,38 @@
 package fr.leguiodan.numlie;
 
-import fr.leguiodan.numlie.utilities.ColorsCodes;
+import fr.leguiodan.numlie.utilities.Database.DatabaseManager;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import static fr.leguiodan.numlie.utilities.Logger.*;
+
 public class Main extends JavaPlugin {
-	@Override
-	public void onDisable()
-	{
-		logNormal("Bye !");
-	}
+
+	public static Main INSTANCE;
+
+	private DatabaseManager databaseManager;
+	private PluginManager pluginManager;
 
 	@Override
 	public void onEnable()
 	{
+		INSTANCE = this;
+		pluginManager = Bukkit.getServer().getPluginManager();
 		logNormal("Hello !");
+		databaseManager = new DatabaseManager();
+		pluginManager.registerEvents(new eventHandler(INSTANCE), this);
 	}
 
-	public void logNormal(String message)
+	@Override
+	public void onDisable()
 	{
-		System.out.println(ColorsCodes.ANSI_PURPLE.getColorCode() + "[Numlie] " + ColorsCodes.ANSI_WHITE.getColorCode() + message + ColorsCodes.ANSI_RESET.getColorCode());
+		this.databaseManager.close();
+		logNormal("Bye !");
 	}
 
-	public void logWarning(String message)
+	public DatabaseManager getDatabaseManager()
 	{
-		System.out.println(ColorsCodes.ANSI_PURPLE.getColorCode() + "[Numlie] " + ColorsCodes.ANSI_YELLOW.getColorCode() + message + ColorsCodes.ANSI_RESET.getColorCode());
-	}
-
-	public void logError(String message)
-	{
-		System.out.println(ColorsCodes.ANSI_PURPLE.getColorCode() + "[Numlie] " + ColorsCodes.ANSI_RED.getColorCode() + message + ColorsCodes.ANSI_RESET.getColorCode());
-	}
-
-	public void logSuccess(String message)
-	{
-		System.out.println(ColorsCodes.ANSI_PURPLE.getColorCode() + "[Numlie] " + ColorsCodes.ANSI_GREEN.getColorCode() + message + ColorsCodes.ANSI_RESET.getColorCode());
+		return databaseManager;
 	}
 }
