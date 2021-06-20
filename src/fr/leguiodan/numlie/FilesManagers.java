@@ -14,10 +14,12 @@ public class FilesManagers {
 	private final File statsFile;
 	private final File guildsFile;
 	private final File configFile;
+	private final File messageFile;
 	private final YamlConfiguration playersYaml;
 	private final YamlConfiguration statsYaml;
 	private final YamlConfiguration guildsYaml;
 	private final YamlConfiguration configYaml;
+	private final YamlConfiguration messageYaml;
 
 	public FilesManagers(Main main)
 	{
@@ -26,11 +28,13 @@ public class FilesManagers {
 		this.statsFile = new File(main.getDataFolder(), "/stats.yml");
 		this.guildsFile = new File(main.getDataFolder(), "/guilds.yml");
 		this.configFile = new File(main.getDataFolder(), "/config.yml");
+		this.messageFile = new File(main.getDataFolder(), "/message.yml");
 
 		this.playersYaml = YamlConfiguration.loadConfiguration(playersFile);
 		this.statsYaml = YamlConfiguration.loadConfiguration(statsFile);
 		this.guildsYaml = YamlConfiguration.loadConfiguration(guildsFile);
 		this.configYaml = YamlConfiguration.loadConfiguration(configFile);
+		this.messageYaml = YamlConfiguration.loadConfiguration(messageFile);
 	}
 
 	public YamlConfiguration getPlayersYaml()
@@ -53,6 +57,11 @@ public class FilesManagers {
 		return configYaml;
 	}
 
+	public YamlConfiguration getMessageYaml()
+	{
+		return messageYaml;
+	}
+
 	public void statsUpdate(int level, int max_pv, int xp_need, int xp_win)
 	{
 		final String key = "Stats.Level " + level;
@@ -70,18 +79,44 @@ public class FilesManagers {
 		}
 	}
 
+	public void messageUpdate()
+	{
+		final String key = "Messages.";
+		final String lang_en = ".EN";
+		final String lang_fr = ".FR";
+
+		messageYaml.set(key + "databaseOk" + lang_en, "Successful connection to the database !");
+		messageYaml.set(key + "databaseOk" + lang_fr, "Connexion réussie à la base de données !");
+
+		messageYaml.set(key + "accountCreate" + lang_en, "Account created for the player :");
+		messageYaml.set(key + "accountCreate" + lang_fr, "Compte créé pour le joueur :");
+
+
+		saveFile(messageYaml);
+		Logger.logSuccess("Message OK !");
+	}
+
+	public String getLanguage()
+	{
+		return configYaml.getString("Main.Language");
+	}
+
 	public void init()
 	{
 		if (!configFile.exists())
 		{
-			try
-			{
-				main.databaseManager.updateStats(main.databaseManager.getDbConnection().getConnection(), main);
-			} catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
 			configYaml.set("Main.Reload", false);
+			configYaml.set("Main.Language", "EN");
+			saveFile(configYaml);
+		}
+		messageUpdate();
+		Logger.logSuccess("inti Files ok !");
+	}
+
+	public void saveFile(YamlConfiguration yamlConfiguration)
+	{
+		if (yamlConfiguration == configYaml)
+		{
 			try
 			{
 				configYaml.save(configFile);
@@ -89,27 +124,46 @@ public class FilesManagers {
 			{
 				e.printStackTrace();
 			}
-		} else
+		}
+		else if (yamlConfiguration == messageYaml)
 		{
-			if (configYaml.getBoolean("Main.Reload"))
+			try
 			{
-				try
-				{
-					main.databaseManager.updateStats(main.databaseManager.getDbConnection().getConnection(), main);
-				} catch (SQLException e)
-				{
-					e.printStackTrace();
-				}
-				configYaml.set("Main.Reload", false);
-				try
-				{
-					configYaml.save(configFile);
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+				messageYaml.save(messageFile);
+			} catch (IOException e)
+			{
+				e.printStackTrace();
 			}
 		}
-		Logger.logSuccess("inti Files ok !");
+		else if (yamlConfiguration == guildsYaml)
+		{
+			try
+			{
+				guildsYaml.save(guildsFile);
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		else if (yamlConfiguration == playersYaml)
+		{
+			try
+			{
+				playersYaml.save(playersFile);
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		else if (yamlConfiguration == statsYaml)
+		{
+			try
+			{
+				statsYaml.save(statsFile);
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 }
