@@ -9,17 +9,7 @@ public enum ColorsCodes {
 	ANSI_BLUE("\u001B[34m"),
 	ANSI_PURPLE("\u001B[35m"),
 	ANSI_CYAN("\u001B[36m"),
-	ANSI_WHITE("\u001B[37m"),
-	CHAT_RESET("§r"),
-	CHAT_BLACK("§0"),
-	CHAT_GRAY("§7"),
-	CHAT_RED("§4"),
-	CHAT_GREEN("§a"),
-	CHAT_YELLOW("§e"),
-	CHAT_BLUE("§9"),
-	CHAT_PURPLE("§5"),
-	CHAT_CYAN("§b"),
-	CHAT_WHITE("§f");
+	ANSI_WHITE("\u001B[37m");
 
 	private final String colorCode;
 
