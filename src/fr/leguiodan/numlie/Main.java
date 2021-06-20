@@ -2,8 +2,11 @@ package fr.leguiodan.numlie;
 
 import fr.leguiodan.numlie.utilities.Database.DatabaseManager;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.sql.SQLException;
 
 import static fr.leguiodan.numlie.utilities.Logger.logNormal;
 
@@ -20,12 +23,10 @@ public class Main extends JavaPlugin {
 	public void onEnable()
 	{
 		INSTANCE = this;
-		pluginManager = Bukkit.getServer().getPluginManager();
-		logNormal("Hello !");
-		databaseManager = new DatabaseManager();
-		pluginManager.registerEvents(new EventManagers(this), this);
 		filesManagers = new FilesManagers(INSTANCE);
 		filesManagers.init();
+		init();
+		logNormal("Hello !");
 	}
 
 	@Override
@@ -33,6 +34,26 @@ public class Main extends JavaPlugin {
 	{
 		this.databaseManager.close();
 		logNormal("Bye !");
+	}
+
+	private void init()
+	{
+		YamlConfiguration configYaml = filesManagers.getConfigYaml();
+		pluginManager = Bukkit.getServer().getPluginManager();
+		databaseManager = new DatabaseManager(INSTANCE);
+		pluginManager.registerEvents(new EventManagers(INSTANCE), this);
+		if (configYaml.getBoolean("Main.Reload"))
+		{
+			try
+			{
+				databaseManager.updateStats(databaseManager.getDbConnection().getConnection());
+			} catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+			configYaml.set("Main.Reload", false);
+			filesManagers.saveFile(configYaml);
+		}
 	}
 
 	public DatabaseManager getDatabaseManager()
