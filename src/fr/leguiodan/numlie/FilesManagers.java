@@ -5,11 +5,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class FilesManagers {
 
-	private final Main main;
 	private final File playersFile;
 	private final File statsFile;
 	private final File guildsFile;
@@ -23,7 +21,6 @@ public class FilesManagers {
 
 	public FilesManagers(Main main)
 	{
-		this.main = main;
 		this.playersFile = new File(main.getDataFolder(), "/players.yml");
 		this.statsFile = new File(main.getDataFolder(), "/stats.yml");
 		this.guildsFile = new File(main.getDataFolder(), "/guilds.yml");
@@ -130,8 +127,7 @@ public class FilesManagers {
 			{
 				e.printStackTrace();
 			}
-		}
-		else if (yamlConfiguration == messageYaml)
+		} else if (yamlConfiguration == messageYaml)
 		{
 			try
 			{
@@ -140,8 +136,7 @@ public class FilesManagers {
 			{
 				e.printStackTrace();
 			}
-		}
-		else if (yamlConfiguration == guildsYaml)
+		} else if (yamlConfiguration == guildsYaml)
 		{
 			try
 			{
@@ -150,8 +145,7 @@ public class FilesManagers {
 			{
 				e.printStackTrace();
 			}
-		}
-		else if (yamlConfiguration == playersYaml)
+		} else if (yamlConfiguration == playersYaml)
 		{
 			try
 			{
@@ -160,8 +154,7 @@ public class FilesManagers {
 			{
 				e.printStackTrace();
 			}
-		}
-		else if (yamlConfiguration == statsYaml)
+		} else if (yamlConfiguration == statsYaml)
 		{
 			try
 			{

@@ -17,8 +17,6 @@ public class Main extends JavaPlugin {
 	public DatabaseManager databaseManager;
 	public FilesManagers filesManagers;
 
-	private PluginManager pluginManager;
-
 	@Override
 	public void onEnable()
 	{
@@ -39,7 +37,7 @@ public class Main extends JavaPlugin {
 	private void init()
 	{
 		YamlConfiguration configYaml = filesManagers.getConfigYaml();
-		pluginManager = Bukkit.getServer().getPluginManager();
+		PluginManager pluginManager = Bukkit.getServer().getPluginManager();
 		databaseManager = new DatabaseManager(INSTANCE);
 		pluginManager.registerEvents(new EventManagers(INSTANCE), this);
 		if (configYaml.getBoolean("Main.Reload"))
