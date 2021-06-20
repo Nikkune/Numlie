@@ -1,5 +1,6 @@
 package fr.leguiodan.numlie.utilities.Database;
 
+import fr.leguiodan.numlie.Main;
 import org.bukkit.entity.Player;
 
 import java.sql.Connection;
@@ -67,10 +68,32 @@ public class DatabaseManager {
 				preparedStatement.setString(1, uuid.toString());
 				preparedStatement.setString(2, player.getDisplayName());
 				preparedStatement.setString(3, link_key.toString());
+				preparedStatement.execute();
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public void updateStats(Connection connection, Main main)
+	{
+		final PreparedStatement preparedStatement;
+		try
+		{
+			preparedStatement = connection.prepareStatement("SELECT * FROM stats");
+			final ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next())
+			{
+				int level = resultSet.getInt("level");
+				int max_pv = resultSet.getInt("max_pv");
+				int xp_need = resultSet.getInt("xp_need");
+				int xp_win = resultSet.getInt("xp_win");
+				main.filesManagers.statsUpdate(level, max_pv, xp_need, xp_win);
+			}
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
 		}
 	}
 }

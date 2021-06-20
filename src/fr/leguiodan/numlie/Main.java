@@ -5,13 +5,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static fr.leguiodan.numlie.utilities.Logger.*;
+import static fr.leguiodan.numlie.utilities.Logger.logNormal;
 
 public class Main extends JavaPlugin {
 
 	public static Main INSTANCE;
 
-	private DatabaseManager databaseManager;
+	public DatabaseManager databaseManager;
+	public FilesManagers filesManagers;
+
 	private PluginManager pluginManager;
 
 	@Override
@@ -21,7 +23,9 @@ public class Main extends JavaPlugin {
 		pluginManager = Bukkit.getServer().getPluginManager();
 		logNormal("Hello !");
 		databaseManager = new DatabaseManager();
-		pluginManager.registerEvents(new eventHandler(INSTANCE), this);
+		pluginManager.registerEvents(new EventManagers(this), this);
+		filesManagers = new FilesManagers(INSTANCE);
+		filesManagers.init();
 	}
 
 	@Override
@@ -35,4 +39,5 @@ public class Main extends JavaPlugin {
 	{
 		return databaseManager;
 	}
+
 }

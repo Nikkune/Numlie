@@ -8,11 +8,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class eventHandler implements Listener {
+public class EventManagers implements Listener {
 
-	private Main main;
+	private final Main main;
 
-	public eventHandler(Main main)
+	public EventManagers(Main main)
 	{
 		this.main = main;
 	}
@@ -25,7 +25,7 @@ public class eventHandler implements Listener {
 		try
 		{
 			final Connection connection = dbConnection.getConnection();
-			main.getDatabaseManager().createAccount(connection, event.getPlayer());
+			main.databaseManager.createAccount(connection, event.getPlayer());
 		} catch (SQLException e)
 		{
 			e.printStackTrace();
