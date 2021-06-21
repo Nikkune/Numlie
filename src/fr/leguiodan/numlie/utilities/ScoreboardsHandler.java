@@ -61,7 +61,7 @@ public class ScoreboardsHandler {
 		final int xp_need = main.filesManagers.getXpNeed(level);
 		final Status status = Status.idToStatus(status_id);
 
-		final Scoreboard scoreboard = player.getScoreboard();;
+		final Scoreboard scoreboard = player.getScoreboard();
 		final Objective objective = scoreboard.getObjective("status");
 		Object[] score = scoreboard.getEntries().toArray();
 		int i;
