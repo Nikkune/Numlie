@@ -1,5 +1,7 @@
 package fr.leguiodan.numlie.utilities;
 
+import fr.leguiodan.numlie.utilities.enumerations.ColorsCodes;
+
 public class Logger {
 	public static void logNormal(String message)
 	{

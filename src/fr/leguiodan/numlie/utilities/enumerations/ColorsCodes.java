@@ -1,4 +1,4 @@
-package fr.leguiodan.numlie.utilities;
+package fr.leguiodan.numlie.utilities.enumerations;
 
 public enum ColorsCodes {
 	ANSI_RESET("\u001B[0m"),

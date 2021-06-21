@@ -1,4 +1,4 @@
-package fr.leguiodan.numlie.utilities;
+package fr.leguiodan.numlie.utilities.enumerations;
 
 import org.bukkit.ChatColor;
 
