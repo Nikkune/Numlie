@@ -95,9 +95,32 @@ public class FilesManagers {
 		messageYaml.set(key + "accountUpdate" + lang_en, "Account updated for the player :");
 		messageYaml.set(key + "accountUpdate" + lang_fr, "Compte mis à jour pour le joueur :");
 
+		messageYaml.set(key + "congratulations" + lang_en, "Congratulations !");
+		messageYaml.set(key + "congratulations" + lang_fr, "Félicitations !");
+
+		messageYaml.set(key + "shame" + lang_en, "Oh no !");
+		messageYaml.set(key + "shame" + lang_fr, "Oh non !");
+
+		messageYaml.set(key + "levelPlus" + lang_en, "You have gained a level! You are now at the level :");
+		messageYaml.set(key + "levelPlus" + lang_fr, "Vous avez gagné un niveau ! Vous êtes maintenant au niveau :");
+
+		messageYaml.set(key + "statusPlus" + lang_en, "You have a new status! You are now a:");
+		messageYaml.set(key + "statusPlus" + lang_fr, "Vous avez un nouveau statut ! Vous êtes maintenant un :");
+
+		messageYaml.set(key + "xpPlus" + lang_en, "You have gained : ");
+		messageYaml.set(key + "xpPlus" + lang_fr, "Vous avez gagné : ");
+
+		messageYaml.set(key + "xpMinus" + lang_en, "You lost 25% of your xp !");
+		messageYaml.set(key + "xpMinus" + lang_fr, "Vous avez perdu 25% de votre xp !");
+
 
 		saveFile(messageYaml);
 		Logger.logSuccess("Message OK !");
+	}
+
+	public String getMessage(String key, String lang)
+	{
+		return messageYaml.getString("Messages." + key + "." + lang);
 	}
 
 	public String getLanguage()
