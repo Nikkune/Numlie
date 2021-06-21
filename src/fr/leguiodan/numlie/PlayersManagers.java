@@ -59,4 +59,15 @@ public class PlayersManagers {
 		main.filesManagers.setPlayersStats(player, playerStats);
 		ScoreboardsHandler.updateScoreboard(player, main);
 	}
+
+	public void entityKilled(Player player, int entity_level)
+	{
+		final int xp_win = main.filesManagers.getXpNeed(entity_level);
+		int[] playerStats = main.filesManagers.getPlayersStats(player);
+		int xp = playerStats[0];
+		xp = xp + xp_win;
+		playerStats[0] = xp;
+		main.filesManagers.setPlayersStats(player, playerStats);
+		updatePlayer(player);
+	}
 }
