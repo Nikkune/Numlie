@@ -18,8 +18,7 @@ public enum Status {
 	Master(10, "Master", ChatColor.LIGHT_PURPLE),
 	Prince(11, "Prince", ChatColor.DARK_RED),
 	Palatine(12, "Palatine", ChatColor.RED),
-	Imperator(13, "Imperator", ChatColor.GOLD),
-	Synthetic(14, "Synthetic", ChatColor.MAGIC);
+	Imperator(13, "Imperator", ChatColor.GOLD);
 
 	private final int id;
 	private final String displayName;
@@ -50,5 +49,18 @@ public enum Status {
 		return Id_Map.get(id);
 	}
 
+	public int getId()
+	{
+		return id;
+	}
 
+	public String getDisplayName()
+	{
+		return displayName;
+	}
+
+	public ChatColor getChatColor()
+	{
+		return chatColor;
+	}
 }

@@ -125,14 +125,6 @@ public class DatabaseManager {
 				String uuid = player.getUniqueId().toString();
 				YamlConfiguration playersYaml = main.filesManagers.getPlayersYaml();
 
-				playersYaml.set("Players." + uuid + ".xp", xp);
-				playersYaml.set("Players." + uuid + ".level", level);
-				playersYaml.set("Players." + uuid + ".money", money);
-				playersYaml.set("Players." + uuid + ".status", status);
-				playersYaml.set("Players." + uuid + ".link_key", link_key);
-				playersYaml.set("Players." + uuid + ".playtime", playtime);
-				playersYaml.set("Players." + uuid + ".guild_id", guild_id);
-
 				main.filesManagers.saveFile(playersYaml);
 				Logger.logSuccess(main.filesManagers.getMessageYaml().getString("Messages.cashCreate." + lang) + " " + player.getDisplayName() + " !");
 			}

@@ -16,6 +16,7 @@ public class Main extends JavaPlugin {
 
 	public DatabaseManager databaseManager;
 	public FilesManagers filesManagers;
+	public PlayersManagers playersManagers;
 
 	@Override
 	public void onEnable()
@@ -52,6 +53,7 @@ public class Main extends JavaPlugin {
 			configYaml.set("Main.Reload", false);
 			filesManagers.saveFile(configYaml);
 		}
+		playersManagers = new PlayersManagers(this);
 	}
 
 	public DatabaseManager getDatabaseManager()
