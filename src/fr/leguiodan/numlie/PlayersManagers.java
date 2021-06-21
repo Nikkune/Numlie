@@ -34,7 +34,8 @@ public class PlayersManagers {
 		{
 			level++;
 			xp = xp - xp_need;
-		}else if (xp == xp_need)
+		}
+		if (xp == xp_need)
 		{
 			xp = 0;
 			level++;
@@ -48,7 +49,7 @@ public class PlayersManagers {
 		if (level < status.getMinLevel())
 		{
 			status_id--;
-		}else if (level > status.getMaxLevel())
+		} else if (level > status.getMaxLevel())
 		{
 			status_id++;
 		}
@@ -62,12 +63,13 @@ public class PlayersManagers {
 
 	public void entityKilled(Player player, int entity_level)
 	{
-		final int xp_win = main.filesManagers.getXpNeed(entity_level);
+		final int xp_win = main.filesManagers.getXpWin(entity_level);
 		int[] playerStats = main.filesManagers.getPlayersStats(player);
 		int xp = playerStats[0];
 		xp = xp + xp_win;
 		playerStats[0] = xp;
 		main.filesManagers.setPlayersStats(player, playerStats);
+		player.sendMessage("You have gained " + xp_win + " xp");
 		updatePlayer(player);
 	}
 }

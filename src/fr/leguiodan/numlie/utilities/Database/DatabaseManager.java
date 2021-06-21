@@ -122,10 +122,15 @@ public class DatabaseManager {
 				String link_key = resultSet.getString("link_key");
 				int playtime = resultSet.getInt("playtime");
 				int guild_id = resultSet.getInt("guild_id");
-				String uuid = player.getUniqueId().toString();
-				YamlConfiguration playersYaml = main.filesManagers.getPlayersYaml();
-
-				main.filesManagers.saveFile(playersYaml);
+				int[] playerStats = new int[6];
+				playerStats[0] = xp;
+				playerStats[1] = level;
+				playerStats[2] = money;
+				playerStats[3] = status;
+				playerStats[4] = playtime;
+				playerStats[5] = guild_id;
+				main.filesManagers.setPlayersStats(player, playerStats);
+				main.filesManagers.setLink_Key(link_key,player);
 				Logger.logSuccess(main.filesManagers.getMessageYaml().getString("Messages.cashCreate." + lang) + " " + player.getDisplayName() + " !");
 			}
 		} catch (SQLException e)
