@@ -17,7 +17,7 @@ import java.util.Map;
 public class EventManagers implements Listener {
 
 	private final Main main;
-	private final Map<Player , Integer> task_map;
+	private final Map<Player, Integer> task_map;
 
 	public EventManagers(Main main)
 	{
@@ -41,7 +41,7 @@ public class EventManagers implements Listener {
 		}
 		ScoreboardsHandler.createScoreboard(player, main);
 		final int task = Bukkit.getScheduler().scheduleSyncRepeatingTask(main, () -> main.playersManagers.updatePlayerMin(player), 20L * 60, 20L * 60);
-		task_map.put(player,task);
+		task_map.put(player, task);
 	}
 
 	@EventHandler

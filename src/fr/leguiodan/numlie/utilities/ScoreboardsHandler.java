@@ -7,8 +7,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
-import java.util.Set;
-
 public class ScoreboardsHandler {
 	public static void createScoreboard(Player player, Main main)
 	{
