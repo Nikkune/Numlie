@@ -69,10 +69,10 @@ public class FilesManagers {
 		try
 		{
 			statsYaml.save(statsFile);
-			Logger.logSuccess("Le fichier Stats.yml a bien enregistré le niveau " + level + " !");
+			Logger.logSuccess(getMessage("statsYamlOk", getLanguage()) + level + " !");
 		} catch (IOException e)
 		{
-			Logger.logError("Le fichier Stats.yml n'a pas enregistré le niveau " + level + " !");
+			Logger.logError(getMessage("statsYamlNon", getLanguage()) + level + " !");
 			e.printStackTrace();
 		}
 	}
@@ -94,6 +94,12 @@ public class FilesManagers {
 
 		messageYaml.set(key + "accountUpdate" + lang_en, "Account updated for the player :");
 		messageYaml.set(key + "accountUpdate" + lang_fr, "Compte mis à jour pour le joueur :");
+
+		messageYaml.set(key + "statsYamlOk" + lang_en, "The Stats.yml file has saved the level : ");
+		messageYaml.set(key + "statsYamlOk" + lang_fr, "Le fichier Stats.yml a enregistré le niveau : ");
+
+		messageYaml.set(key + "statsYmlNo" + lang_en, "The Stats.yml file did not save level : ");
+		messageYaml.set(key + "statsYmlNo" + lang_fr, "Le fichier Stats.yml n'a pas enregistré le niveau : ");
 
 		messageYaml.set(key + "congratulations" + lang_en, "Congratulations !");
 		messageYaml.set(key + "congratulations" + lang_fr, "Félicitations !");

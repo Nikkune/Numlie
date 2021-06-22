@@ -74,7 +74,7 @@ public class DatabaseManager {
 				preparedStatement.setString(2, player.getDisplayName());
 				preparedStatement.setString(3, link_key.toString());
 				preparedStatement.execute();
-				Logger.logSuccess(main.filesManagers.getMessageYaml().getString("Messages.accountCreate." + lang) + " " + player.getDisplayName() + " !");
+				Logger.logSuccess(main.filesManagers.getMessage("accountCreate", lang) + " " + player.getDisplayName() + " !");
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
@@ -132,7 +132,7 @@ public class DatabaseManager {
 				main.filesManagers.setPlayersStats(player, playerStats);
 				main.filesManagers.setLink_Key(player, link_key);
 				main.filesManagers.setLang(player, player_lang);
-				Logger.logSuccess(main.filesManagers.getMessageYaml().getString("Messages.cashCreate." + lang) + " " + player.getDisplayName() + " !");
+				Logger.logSuccess(main.filesManagers.getMessage("cashCreate", lang) + " " + player.getDisplayName() + " !");
 			}
 		} catch (SQLException e)
 		{
@@ -176,7 +176,7 @@ public class DatabaseManager {
 				preparedStatement.setString(7, player_lang);
 				preparedStatement.setString(8, uuid);
 				preparedStatement.execute();
-				Logger.logSuccess(main.filesManagers.getMessageYaml().getString("Messages.accountUpdate." + lang) + " " + player.getDisplayName() + " !");
+				Logger.logSuccess(main.filesManagers.getMessage("accountUpdate", lang) + " " + player.getDisplayName() + " !");
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
