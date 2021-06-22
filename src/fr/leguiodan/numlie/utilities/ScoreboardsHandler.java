@@ -12,6 +12,7 @@ public class ScoreboardsHandler {
 	public static void createScoreboard(Player player, Main main)
 	{
 		final String uuid = player.getUniqueId().toString();
+		final String player_lang = main.filesManagers.getPlayerLang(player);
 		final YamlConfiguration playersYaml = main.filesManagers.getPlayersYaml();
 
 		final int xp = playersYaml.getInt("Players." + uuid + ".xp");
@@ -32,7 +33,7 @@ public class ScoreboardsHandler {
 		final Score scoreLevel = objective.getScore(ChatColor.AQUA + "Level : " + level);
 		final Score scoreXp = objective.getScore(ChatColor.BLUE + "Xp : " + xp + " / " + xp_need);
 		final Score scoreMoney = objective.getScore(ChatColor.GOLD + "You have " + money + " Golds");
-		final Score scoreStatus = objective.getScore(status.getChatColor() + "You are a " + status.getDisplayName());
+		final Score scoreStatus = objective.getScore(status.getChatColor() + "You are a " + status.getDisplayName(player_lang));
 		final Score scorePlaytime = objective.getScore(ChatColor.RED + "Playtime : " + playtime + " min");
 		final Score scoreGuild = objective.getScore("Guild : " + guild_id);
 
@@ -49,6 +50,7 @@ public class ScoreboardsHandler {
 	public static void updateScoreboard(Player player, Main main)
 	{
 		final String uuid = player.getUniqueId().toString();
+		final String player_lang = main.filesManagers.getPlayerLang(player);
 		final YamlConfiguration playersYaml = main.filesManagers.getPlayersYaml();
 
 		final int xp = playersYaml.getInt("Players." + uuid + ".xp");
@@ -71,8 +73,8 @@ public class ScoreboardsHandler {
 
 		final Score scoreLevel = objective.getScore(ChatColor.AQUA + "Level : " + level);
 		final Score scoreXp = objective.getScore(ChatColor.BLUE + "Xp : " + xp + " / " + xp_need);
-		final Score scoreMoney = objective.getScore(ChatColor.GOLD + "You have " + money + " Golds");
-		final Score scoreStatus = objective.getScore(status.getChatColor() + "You are a " + status.getDisplayName());
+		final Score scoreMoney = objective.getScore(ChatColor.GOLD + "Money : " + money + " Golds");
+		final Score scoreStatus = objective.getScore(status.getChatColor() + "Status : " + status.getDisplayName(player_lang));
 		final Score scorePlaytime = objective.getScore(ChatColor.RED + "Playtime : " + playtime + " min");
 		final Score scoreGuild = objective.getScore("Guild : " + guild_id);
 

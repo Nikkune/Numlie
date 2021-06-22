@@ -89,7 +89,7 @@ public class PlayersManagers {
 	{
 		String player_lang = main.filesManagers.getPlayerLang(player);
 		Status status = Status.idToStatus(status_id);
-		player.sendTitle(ChatColor.GREEN + main.filesManagers.getMessage(Messages.Congratulations, player_lang), ChatColor.GREEN + main.filesManagers.getMessage(Messages.Status_Up, player_lang) + status.getChatColor() + status.getDisplayName(), 10, 20 * 2, 10);
+		player.sendTitle(ChatColor.GREEN + main.filesManagers.getMessage(Messages.Congratulations, player_lang), ChatColor.GREEN + main.filesManagers.getMessage(Messages.Status_Up, player_lang) + status.getChatColor() + status.getDisplayName(player_lang), 10, 20 * 2, 10);
 	}
 
 	public void respawn(Player player)
