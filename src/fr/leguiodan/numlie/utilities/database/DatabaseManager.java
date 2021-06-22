@@ -59,7 +59,7 @@ public class DatabaseManager {
 	{
 		final UUID uuid = player.getUniqueId();
 		StringBuilder link_key = new StringBuilder();
-		final String lang = main.filesManagers.getLanguage();
+		final String lang = main.filesManager.getLanguage();
 		while (link_key.length() < 12)
 		{
 			final Random random = new Random();
@@ -75,7 +75,7 @@ public class DatabaseManager {
 				preparedStatement.setString(2, player.getDisplayName());
 				preparedStatement.setString(3, link_key.toString());
 				preparedStatement.execute();
-				Logger.logSuccess(main.filesManagers.getMessage(Messages.Account_Created, lang) + " " + player.getDisplayName() + " !");
+				Logger.logSuccess(main.filesManager.getMessage(Messages.Account_Created, lang) + " " + player.getDisplayName() + " !");
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
@@ -96,7 +96,7 @@ public class DatabaseManager {
 				int max_pv = resultSet.getInt("max_pv");
 				int xp_need = resultSet.getInt("xp_need");
 				int xp_win = resultSet.getInt("xp_win");
-				main.filesManagers.statsUpdate(level, max_pv, xp_need, xp_win);
+				main.filesManager.statsUpdate(level, max_pv, xp_need, xp_win);
 			}
 		} catch (SQLException e)
 		{
@@ -106,7 +106,7 @@ public class DatabaseManager {
 
 	public void createPlayerCash(Connection connection, Player player)
 	{
-		final String lang = main.filesManagers.getLanguage();
+		final String lang = main.filesManager.getLanguage();
 		final PreparedStatement preparedStatement;
 		try
 		{
@@ -130,10 +130,10 @@ public class DatabaseManager {
 				playerStats[3] = status;
 				playerStats[4] = playtime;
 				playerStats[5] = guild_id;
-				main.filesManagers.setPlayersStats(player, playerStats);
-				main.filesManagers.setLink_Key(player, link_key);
-				main.filesManagers.setPlayerLang(player, player_lang);
-				Logger.logSuccess(main.filesManagers.getMessage(Messages.Cash_Created, lang) + " " + player.getDisplayName() + " !");
+				main.filesManager.setPlayersStats(player, playerStats);
+				main.filesManager.setLink_Key(player, link_key);
+				main.filesManager.setPlayerLang(player, player_lang);
+				Logger.logSuccess(main.filesManager.getMessage(Messages.Cash_Created, lang) + " " + player.getDisplayName() + " !");
 			}
 		} catch (SQLException e)
 		{
@@ -143,9 +143,9 @@ public class DatabaseManager {
 
 	public void updatesPlayers(Connection connection, Player player)
 	{
-		final String lang = main.filesManagers.getLanguage();
+		final String lang = main.filesManager.getLanguage();
 		final String key = "Players." + player.getUniqueId().toString();
-		final ConfigurationSection playersSection = main.filesManagers.getPlayersYaml().getConfigurationSection(key);
+		final ConfigurationSection playersSection = main.filesManager.getPlayersYaml().getConfigurationSection(key);
 		if (playersSection != null)
 		{
 			final int xp = playersSection.getInt("xp");
@@ -177,7 +177,7 @@ public class DatabaseManager {
 				preparedStatement.setString(7, player_lang);
 				preparedStatement.setString(8, uuid);
 				preparedStatement.execute();
-				Logger.logSuccess(main.filesManagers.getMessage(Messages.Account_Updated, lang) + " " + player.getDisplayName() + " !");
+				Logger.logSuccess(main.filesManager.getMessage(Messages.Account_Updated, lang) + " " + player.getDisplayName() + " !");
 			} catch (SQLException e)
 			{
 				e.printStackTrace();

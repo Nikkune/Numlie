@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 
-public class FilesManagers {
+public class FilesManager {
 
 	private final File playersFile;
 	private final File statsFile;
@@ -21,7 +21,7 @@ public class FilesManagers {
 	private final YamlConfiguration configYaml;
 	private final YamlConfiguration messageYaml;
 
-	public FilesManagers(Main main)
+	public FilesManager(Main main)
 	{
 		this.playersFile = new File(main.getDataFolder(), "/players.yml");
 		this.statsFile = new File(main.getDataFolder(), "/stats.yml");

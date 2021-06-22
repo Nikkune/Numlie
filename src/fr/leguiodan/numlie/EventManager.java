@@ -20,13 +20,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EventManagers implements Listener {
+public class EventManager implements Listener {
 
 	private final Main main;
 	private final Map<Player, Integer> taskMin_map;
 	private final Map<Player, Integer> task_map;
 
-	public EventManagers(Main main)
+	public EventManager(Main main)
 	{
 		this.main = main;
 		this.taskMin_map = new HashMap<>();
@@ -48,8 +48,8 @@ public class EventManagers implements Listener {
 			e.printStackTrace();
 		}
 		ScoreboardsHandler.createScoreboard(player, main);
-		final int task = Bukkit.getScheduler().scheduleSyncRepeatingTask(main, () -> main.playersManagers.updatePlayerMin(player), 20L * 60, 20L * 60);
-		final int task2 = Bukkit.getScheduler().scheduleSyncRepeatingTask(main, () -> main.playersManagers.updatePlayer(player), 0L, 20L);
+		final int task = Bukkit.getScheduler().scheduleSyncRepeatingTask(main, () -> main.playersManager.updatePlayerMin(player), 20L * 60, 20L * 60);
+		final int task2 = Bukkit.getScheduler().scheduleSyncRepeatingTask(main, () -> main.playersManager.updatePlayer(player), 0L, 20L);
 		taskMin_map.put(player, task);
 		task_map.put(player, task2);
 	}
@@ -80,18 +80,18 @@ public class EventManagers implements Listener {
 		{
 			EntityType[] HOSTILE_TYPE = new EntityType[]{EntityType.BLAZE, EntityType.CREEPER, EntityType.ELDER_GUARDIAN, EntityType.ENDERMITE, EntityType.EVOKER, EntityType.GHAST, EntityType.GUARDIAN, EntityType.HUSK, EntityType.MAGMA_CUBE, EntityType.PIG_ZOMBIE, EntityType.SHULKER, EntityType.SILVERFISH, EntityType.SKELETON, EntityType.SLIME, EntityType.SPIDER, EntityType.STRAY, EntityType.VEX, EntityType.VINDICATOR, EntityType.WITCH, EntityType.WITHER_SKELETON, EntityType.ZOMBIE, EntityType.ZOMBIE_VILLAGER, EntityType.CAVE_SPIDER, EntityType.ENDERMAN};
 			List<EntityType> HOSTILE_LIST = Arrays.asList(HOSTILE_TYPE);
-			int[] playerStats = main.filesManagers.getPlayersStats(killer);
+			int[] playerStats = main.filesManager.getPlayersStats(killer);
 			int level = playerStats[1];
 			if (HOSTILE_LIST.contains(death.getType()))
 			{
-				main.playersManagers.entityKilled(killer, level);
+				main.playersManager.entityKilled(killer, level);
 			}
 			if (death.getType() == EntityType.PLAYER)
 			{
 				Player killed = (Player) death;
-				int[] killedStats = main.filesManagers.getPlayersStats(killed);
+				int[] killedStats = main.filesManager.getPlayersStats(killed);
 				int killedLevel = killedStats[1];
-				main.playersManagers.entityKilled(killer, killedLevel);
+				main.playersManager.entityKilled(killer, killedLevel);
 			}
 		}
 	}
@@ -100,6 +100,6 @@ public class EventManagers implements Listener {
 	public void onPlayerRespawn(PlayerRespawnEvent event)
 	{
 		Player player = event.getPlayer();
-		main.playersManagers.respawn(player);
+		main.playersManager.respawn(player);
 	}
 }

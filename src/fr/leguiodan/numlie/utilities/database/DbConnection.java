@@ -27,8 +27,8 @@ public class DbConnection {
 			Class.forName("com.mysql.jdbc.Driver");
 			this.connection = DriverManager.getConnection(this.dbCredentials.toURI(), this.dbCredentials.getUser(), this.dbCredentials.getPass());
 
-			final String lang = main.filesManagers.getLanguage();
-			Logger.logSuccess(main.filesManagers.getMessage(Messages.Database_Connected , lang));
+			final String lang = main.filesManager.getLanguage();
+			Logger.logSuccess(main.filesManager.getMessage(Messages.Database_Connected , lang));
 		} catch (SQLException | ClassNotFoundException e)
 		{
 			e.printStackTrace();

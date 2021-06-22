@@ -15,15 +15,16 @@ public class Main extends JavaPlugin {
 	public static Main INSTANCE;
 
 	public DatabaseManager databaseManager;
-	public FilesManagers filesManagers;
-	public PlayersManagers playersManagers;
+	public FilesManager filesManager;
+	public PlayersManager playersManager;
+	public GuildsManager guildsManager;
 
 	@Override
 	public void onEnable()
 	{
 		INSTANCE = this;
-		filesManagers = new FilesManagers(INSTANCE);
-		filesManagers.init();
+		filesManager = new FilesManager(INSTANCE);
+		filesManager.init();
 		init();
 		logNormal("Hello !");
 	}
@@ -37,10 +38,10 @@ public class Main extends JavaPlugin {
 
 	private void init()
 	{
-		YamlConfiguration configYaml = filesManagers.getConfigYaml();
+		YamlConfiguration configYaml = filesManager.getConfigYaml();
 		PluginManager pluginManager = Bukkit.getServer().getPluginManager();
 		databaseManager = new DatabaseManager(INSTANCE);
-		pluginManager.registerEvents(new EventManagers(INSTANCE), this);
+		pluginManager.registerEvents(new EventManager(INSTANCE), this);
 		if (configYaml.getBoolean("Main.Reload"))
 		{
 			try
@@ -51,9 +52,10 @@ public class Main extends JavaPlugin {
 				e.printStackTrace();
 			}
 			configYaml.set("Main.Reload", false);
-			filesManagers.saveFile(configYaml);
+			filesManager.saveFile(configYaml);
 		}
-		playersManagers = new PlayersManagers(this);
+		guildsManager = new GuildsManager(INSTANCE);
+		playersManager = new PlayersManager(INSTANCE);
 	}
 
 	public DatabaseManager getDatabaseManager()

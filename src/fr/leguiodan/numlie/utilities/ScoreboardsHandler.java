@@ -12,8 +12,8 @@ public class ScoreboardsHandler {
 	public static void createScoreboard(Player player, Main main)
 	{
 		final String uuid = player.getUniqueId().toString();
-		final String player_lang = main.filesManagers.getPlayerLang(player);
-		final YamlConfiguration playersYaml = main.filesManagers.getPlayersYaml();
+		final String player_lang = main.filesManager.getPlayerLang(player);
+		final YamlConfiguration playersYaml = main.filesManager.getPlayersYaml();
 
 		final int xp = playersYaml.getInt("Players." + uuid + ".xp");
 		final int level = playersYaml.getInt("Players." + uuid + ".level");
@@ -21,7 +21,7 @@ public class ScoreboardsHandler {
 		final int status_id = playersYaml.getInt("Players." + uuid + ".status");
 		final int playtime = playersYaml.getInt("Players." + uuid + ".playtime");
 		final int guild_id = playersYaml.getInt("Players." + uuid + ".guild_id");
-		final int xp_need = main.filesManagers.getXpNeed(level);
+		final int xp_need = main.filesManager.getXpNeed(level);
 		final Status status = Status.idToStatus(status_id);
 
 		final ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
@@ -50,8 +50,8 @@ public class ScoreboardsHandler {
 	public static void updateScoreboard(Player player, Main main)
 	{
 		final String uuid = player.getUniqueId().toString();
-		final String player_lang = main.filesManagers.getPlayerLang(player);
-		final YamlConfiguration playersYaml = main.filesManagers.getPlayersYaml();
+		final String player_lang = main.filesManager.getPlayerLang(player);
+		final YamlConfiguration playersYaml = main.filesManager.getPlayersYaml();
 
 		final int xp = playersYaml.getInt("Players." + uuid + ".xp");
 		final int level = playersYaml.getInt("Players." + uuid + ".level");
@@ -59,7 +59,7 @@ public class ScoreboardsHandler {
 		final int status_id = playersYaml.getInt("Players." + uuid + ".status");
 		final int playtime = playersYaml.getInt("Players." + uuid + ".playtime");
 		final int guild_id = playersYaml.getInt("Players." + uuid + ".guild_id");
-		final int xp_need = main.filesManagers.getXpNeed(level);
+		final int xp_need = main.filesManager.getXpNeed(level);
 		final Status status = Status.idToStatus(status_id);
 
 		final Scoreboard scoreboard = player.getScoreboard();
