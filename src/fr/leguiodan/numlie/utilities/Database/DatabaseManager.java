@@ -3,7 +3,6 @@ package fr.leguiodan.numlie.utilities.Database;
 import fr.leguiodan.numlie.Main;
 import fr.leguiodan.numlie.utilities.Logger;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.sql.Connection;
@@ -122,6 +121,7 @@ public class DatabaseManager {
 				String link_key = resultSet.getString("link_key");
 				int playtime = resultSet.getInt("playtime");
 				int guild_id = resultSet.getInt("guild_id");
+				String player_lang = resultSet.getString("lang");
 				int[] playerStats = new int[6];
 				playerStats[0] = xp;
 				playerStats[1] = level;
@@ -130,7 +130,8 @@ public class DatabaseManager {
 				playerStats[4] = playtime;
 				playerStats[5] = guild_id;
 				main.filesManagers.setPlayersStats(player, playerStats);
-				main.filesManagers.setLink_Key(link_key,player);
+				main.filesManagers.setLink_Key(player, link_key);
+				main.filesManagers.setLang(player, player_lang);
 				Logger.logSuccess(main.filesManagers.getMessageYaml().getString("Messages.cashCreate." + lang) + " " + player.getDisplayName() + " !");
 			}
 		} catch (SQLException e)
@@ -152,6 +153,7 @@ public class DatabaseManager {
 			final int status = playersSection.getInt("status");
 			final int playtime = playersSection.getInt("playtime");
 			int guild_id = playersSection.getInt("guild_id");
+			String player_lang = playersSection.getString("lang");
 			Object real_id;
 			if (guild_id == 0)
 			{
@@ -164,14 +166,15 @@ public class DatabaseManager {
 			final PreparedStatement preparedStatement;
 			try
 			{
-				preparedStatement = connection.prepareStatement("UPDATE players SET xp = ?, level = ?, money = ?, status = ?, playtime = ?, guild_id = ? WHERE uuid = ?");
+				preparedStatement = connection.prepareStatement("UPDATE players SET xp = ?, level = ?, money = ?, status = ?, playtime = ?, guild_id = ?, lang = ? WHERE uuid = ?");
 				preparedStatement.setInt(1, xp);
 				preparedStatement.setInt(2, level);
 				preparedStatement.setInt(3, money);
 				preparedStatement.setInt(4, status);
 				preparedStatement.setInt(5, playtime);
 				preparedStatement.setObject(6, real_id);
-				preparedStatement.setString(7, uuid);
+				preparedStatement.setString(7, player_lang);
+				preparedStatement.setString(8, uuid);
 				preparedStatement.execute();
 				Logger.logSuccess(main.filesManagers.getMessageYaml().getString("Messages.accountUpdate." + lang) + " " + player.getDisplayName() + " !");
 			} catch (SQLException e)

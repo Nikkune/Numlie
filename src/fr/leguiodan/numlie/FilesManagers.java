@@ -233,10 +233,17 @@ public class FilesManagers {
 		}
 	}
 
-	public void setLink_Key(String link_key,Player player)
+	public void setLink_Key(Player player, String link_key)
 	{
 		final String uuid = player.getUniqueId().toString();
 		playersYaml.set("Players." + uuid + ".link_key", link_key);
+		saveFile(playersYaml);
+	}
+
+	public void setLang(Player player, String lang)
+	{
+		final String uuid = player.getUniqueId().toString();
+		playersYaml.set("Players." + uuid + ".lang", lang);
 		saveFile(playersYaml);
 	}
 }
