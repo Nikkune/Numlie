@@ -1,5 +1,9 @@
 package fr.leguiodan.numlie;
 
+import fr.leguiodan.numlie.managers.EventManager;
+import fr.leguiodan.numlie.managers.FilesManager;
+import fr.leguiodan.numlie.managers.GuildsManager;
+import fr.leguiodan.numlie.managers.PlayersManager;
 import fr.leguiodan.numlie.utilities.database.DatabaseManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;

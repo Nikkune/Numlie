@@ -1,5 +1,6 @@
-package fr.leguiodan.numlie;
+package fr.leguiodan.numlie.managers;
 
+import fr.leguiodan.numlie.Main;
 import fr.leguiodan.numlie.utilities.Logger;
 import fr.leguiodan.numlie.utilities.enumerations.Messages;
 
@@ -12,7 +13,7 @@ public class GuildsManager {
 
 	private final Map<String, Integer> guild_list;
 
-	GuildsManager(Main instance)
+	public GuildsManager(Main instance)
 	{
 		this.main = instance;
 		this.guild_list = new HashMap<>();

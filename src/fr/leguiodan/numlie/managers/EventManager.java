@@ -1,5 +1,6 @@
-package fr.leguiodan.numlie;
+package fr.leguiodan.numlie.managers;
 
+import fr.leguiodan.numlie.Main;
 import fr.leguiodan.numlie.utilities.database.DbConnection;
 import fr.leguiodan.numlie.utilities.ScoreboardsHandler;
 import org.bukkit.Bukkit;
