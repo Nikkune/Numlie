@@ -1,6 +1,7 @@
 package fr.leguiodan.numlie;
 
 import fr.leguiodan.numlie.utilities.Logger;
+import fr.leguiodan.numlie.utilities.enumerations.Messages;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -69,10 +70,10 @@ public class FilesManagers {
 		try
 		{
 			statsYaml.save(statsFile);
-			Logger.logSuccess(getMessage("statsYamlOk", getLanguage()) + level + " !");
+			Logger.logSuccess(getMessage(Messages.Level_Saved, getLanguage()) + level + " !");
 		} catch (IOException e)
 		{
-			Logger.logError(getMessage("statsYamlNon", getLanguage()) + level + " !");
+			Logger.logError(getMessage(Messages.Level_Not_Saved, getLanguage()) + level + " !");
 			e.printStackTrace();
 		}
 	}
@@ -121,12 +122,12 @@ public class FilesManagers {
 
 
 		saveFile(messageYaml);
-		Logger.logSuccess("Message OK !");
+		Logger.logSuccess("Messages Saved !");
 	}
 
-	public String getMessage(String key, String lang)
+	public String getMessage(Messages message, String lang)
 	{
-		return messageYaml.getString("Messages." + key + "." + lang);
+		return messageYaml.getString("Messages." + message.getKey() + "." + lang);
 	}
 
 	public String getLanguage()
@@ -246,10 +247,16 @@ public class FilesManagers {
 		saveFile(playersYaml);
 	}
 
-	public void setLang(Player player, String lang)
+	public void setPlayerLang(Player player, String lang)
 	{
 		final String uuid = player.getUniqueId().toString();
 		playersYaml.set("Players." + uuid + ".lang", lang);
 		saveFile(playersYaml);
+	}
+
+	public String getPlayerLang(Player player)
+	{
+		final String uuid = player.getUniqueId().toString();
+		return playersYaml.getString("Players." + uuid + ".lang");
 	}
 }

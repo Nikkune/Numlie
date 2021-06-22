@@ -2,6 +2,7 @@ package fr.leguiodan.numlie.utilities.Database;
 
 import fr.leguiodan.numlie.Main;
 import fr.leguiodan.numlie.utilities.Logger;
+import fr.leguiodan.numlie.utilities.enumerations.Messages;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,7 +28,7 @@ public class DbConnection {
 			this.connection = DriverManager.getConnection(this.dbCredentials.toURI(), this.dbCredentials.getUser(), this.dbCredentials.getPass());
 
 			final String lang = main.filesManagers.getLanguage();
-			Logger.logSuccess(main.filesManagers.getMessage("databaseOk" , lang));
+			Logger.logSuccess(main.filesManagers.getMessage(Messages.Database_Connected , lang));
 		} catch (SQLException | ClassNotFoundException e)
 		{
 			e.printStackTrace();

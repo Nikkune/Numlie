@@ -79,6 +79,7 @@ public class PlayersManagers {
 
 	public void levelPassed(Player player, int level)
 	{
+		String player_lang = main.filesManagers.getPlayerLang(player);
 		player.sendTitle(ChatColor.GREEN + "Congratulations", ChatColor.GREEN + "You have gained a level ! You are now level : " + level,10,20*2,10);
 	}
 

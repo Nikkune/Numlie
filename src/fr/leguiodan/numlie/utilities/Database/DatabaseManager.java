@@ -2,6 +2,7 @@ package fr.leguiodan.numlie.utilities.Database;
 
 import fr.leguiodan.numlie.Main;
 import fr.leguiodan.numlie.utilities.Logger;
+import fr.leguiodan.numlie.utilities.enumerations.Messages;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -74,7 +75,7 @@ public class DatabaseManager {
 				preparedStatement.setString(2, player.getDisplayName());
 				preparedStatement.setString(3, link_key.toString());
 				preparedStatement.execute();
-				Logger.logSuccess(main.filesManagers.getMessage("accountCreate", lang) + " " + player.getDisplayName() + " !");
+				Logger.logSuccess(main.filesManagers.getMessage(Messages.Account_Created, lang) + " " + player.getDisplayName() + " !");
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
@@ -131,8 +132,8 @@ public class DatabaseManager {
 				playerStats[5] = guild_id;
 				main.filesManagers.setPlayersStats(player, playerStats);
 				main.filesManagers.setLink_Key(player, link_key);
-				main.filesManagers.setLang(player, player_lang);
-				Logger.logSuccess(main.filesManagers.getMessage("cashCreate", lang) + " " + player.getDisplayName() + " !");
+				main.filesManagers.setPlayerLang(player, player_lang);
+				Logger.logSuccess(main.filesManagers.getMessage(Messages.Cash_Created, lang) + " " + player.getDisplayName() + " !");
 			}
 		} catch (SQLException e)
 		{
@@ -176,7 +177,7 @@ public class DatabaseManager {
 				preparedStatement.setString(7, player_lang);
 				preparedStatement.setString(8, uuid);
 				preparedStatement.execute();
-				Logger.logSuccess(main.filesManagers.getMessage("accountUpdate", lang) + " " + player.getDisplayName() + " !");
+				Logger.logSuccess(main.filesManagers.getMessage(Messages.Account_Updated, lang) + " " + player.getDisplayName() + " !");
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
