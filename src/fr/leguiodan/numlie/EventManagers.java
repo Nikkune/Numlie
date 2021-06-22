@@ -1,7 +1,6 @@
 package fr.leguiodan.numlie;
 
-import fr.leguiodan.numlie.utilities.Database.DbConnection;
-import fr.leguiodan.numlie.utilities.Logger;
+import fr.leguiodan.numlie.utilities.database.DbConnection;
 import fr.leguiodan.numlie.utilities.ScoreboardsHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -9,7 +8,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;

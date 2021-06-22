@@ -1,4 +1,4 @@
-package fr.leguiodan.numlie.utilities.Database;
+package fr.leguiodan.numlie.utilities.database;
 
 public class DbCredentials {
 	private final String host;

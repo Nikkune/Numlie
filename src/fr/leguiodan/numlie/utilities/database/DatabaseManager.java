@@ -1,4 +1,4 @@
-package fr.leguiodan.numlie.utilities.Database;
+package fr.leguiodan.numlie.utilities.database;
 
 import fr.leguiodan.numlie.Main;
 import fr.leguiodan.numlie.utilities.Logger;

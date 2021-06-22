@@ -41,11 +41,6 @@ public class FilesManagers {
 		return playersYaml;
 	}
 
-	public YamlConfiguration getStatsYaml()
-	{
-		return statsYaml;
-	}
-
 	public YamlConfiguration getGuildsYaml()
 	{
 		return guildsYaml;
@@ -54,11 +49,6 @@ public class FilesManagers {
 	public YamlConfiguration getConfigYaml()
 	{
 		return configYaml;
-	}
-
-	public YamlConfiguration getMessageYaml()
-	{
-		return messageYaml;
 	}
 
 	public void statsUpdate(int level, int max_pv, int xp_need, int xp_win)
@@ -73,7 +63,7 @@ public class FilesManagers {
 			Logger.logSuccess(getMessage(Messages.Level_Saved, getLanguage()) + level + " !");
 		} catch (IOException e)
 		{
-			Logger.logError(getMessage(Messages.Level_Not_Saved, getLanguage()) + level + " !");
+			Logger.logWarning(getMessage(Messages.Level_Not_Saved, getLanguage()) + level + " !");
 			e.printStackTrace();
 		}
 	}
@@ -120,9 +110,14 @@ public class FilesManagers {
 		messageYaml.set(key + "xpMinus" + lang_en, "You lost 25% of your xp !");
 		messageYaml.set(key + "xpMinus" + lang_fr, "Vous avez perdu 25% de votre xp !");
 
+		messageYaml.set(key + "backupErr" + lang_en, "Backup error on the file :");
+		messageYaml.set(key + "backupErr" + lang_fr, "Erreur de sauvegarde sur le fichier :");
+
+		messageYaml.set(key + "backupOk" + lang_en, "Successful backup for file :");
+		messageYaml.set(key + "backupOk" + lang_fr, "Sauvegarde réussie pour le fichier :");
+
 
 		saveFile(messageYaml);
-		Logger.logSuccess("Messages Saved !");
 	}
 
 	public String getMessage(Messages message, String lang)
@@ -197,8 +192,10 @@ public class FilesManagers {
 			try
 			{
 				configYaml.save(configFile);
+				Logger.logSuccess(getMessage(Messages.Backup_Success, getLanguage()) + "Config.yml");
 			} catch (IOException e)
 			{
+				Logger.logError(getMessage(Messages.Backup_Error, getLanguage()) + "Config.yml");
 				e.printStackTrace();
 			}
 		} else if (yamlConfiguration == messageYaml)
@@ -206,8 +203,10 @@ public class FilesManagers {
 			try
 			{
 				messageYaml.save(messageFile);
+				Logger.logSuccess(getMessage(Messages.Backup_Success, getLanguage()) + "Messages.yml");
 			} catch (IOException e)
 			{
+				Logger.logError(getMessage(Messages.Backup_Error, getLanguage()) + "Messages.yml");
 				e.printStackTrace();
 			}
 		} else if (yamlConfiguration == guildsYaml)
@@ -215,8 +214,10 @@ public class FilesManagers {
 			try
 			{
 				guildsYaml.save(guildsFile);
+				Logger.logSuccess(getMessage(Messages.Backup_Success, getLanguage()) + "Guilds.yml");
 			} catch (IOException e)
 			{
+				Logger.logError(getMessage(Messages.Backup_Error, getLanguage()) + "Guilds.yml");
 				e.printStackTrace();
 			}
 		} else if (yamlConfiguration == playersYaml)
@@ -224,8 +225,10 @@ public class FilesManagers {
 			try
 			{
 				playersYaml.save(playersFile);
+				Logger.logSuccess(getMessage(Messages.Backup_Success, getLanguage()) + "Players.yml");
 			} catch (IOException e)
 			{
+				Logger.logError(getMessage(Messages.Backup_Error, getLanguage()) + "Players.yml");
 				e.printStackTrace();
 			}
 		} else if (yamlConfiguration == statsYaml)
@@ -233,8 +236,10 @@ public class FilesManagers {
 			try
 			{
 				statsYaml.save(statsFile);
+				Logger.logSuccess(getMessage(Messages.Backup_Success, getLanguage()) + "Stats.yml");
 			} catch (IOException e)
 			{
+				Logger.logError(getMessage(Messages.Backup_Error, getLanguage()) + "Stats.yml");
 				e.printStackTrace();
 			}
 		}

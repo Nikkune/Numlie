@@ -13,8 +13,10 @@ public enum Messages {
 	Status_Up("statusPlus"),
 	Xp_Up("xpPlus"),
 	Xp_Down("xpMinus"),
+	Backup_Error("backupErr"),
+	Backup_Success("backupOk"),
 	;
-	String key;
+	final String key;
 
 	Messages(String key)
 	{

@@ -1,6 +1,6 @@
 package fr.leguiodan.numlie;
 
-import fr.leguiodan.numlie.utilities.Database.DatabaseManager;
+import fr.leguiodan.numlie.utilities.database.DatabaseManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;

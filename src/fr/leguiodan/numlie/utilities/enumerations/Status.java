@@ -53,11 +53,6 @@ public enum Status {
 		return Id_Map.get(id);
 	}
 
-	public int getId()
-	{
-		return id;
-	}
-
 	public String getDisplayName()
 	{
 		return displayName;
