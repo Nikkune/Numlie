@@ -77,14 +77,14 @@ public class FilesManager {
 		messageYaml.set(key + "databaseOk" + lang_en, "Successful connection to the database !");
 		messageYaml.set(key + "databaseOk" + lang_fr, "Connexion réussie à la base de données !");
 
-		messageYaml.set(key + "accountCreate" + lang_en, "Account created for the player :");
-		messageYaml.set(key + "accountCreate" + lang_fr, "Compte créé pour le joueur :");
+		messageYaml.set(key + "accountCreate" + lang_en, "Account created for the player : ");
+		messageYaml.set(key + "accountCreate" + lang_fr, "Compte créé pour le joueur : ");
 
-		messageYaml.set(key + "cashCreate" + lang_en, "Cash created for the player :");
-		messageYaml.set(key + "cashCreate" + lang_fr, "Cash créé pour le joueur :");
+		messageYaml.set(key + "cashCreate" + lang_en, "Cash created for the player : ");
+		messageYaml.set(key + "cashCreate" + lang_fr, "Cash créé pour le joueur : ");
 
-		messageYaml.set(key + "accountUpdate" + lang_en, "Account updated for the player :");
-		messageYaml.set(key + "accountUpdate" + lang_fr, "Compte mis à jour pour le joueur :");
+		messageYaml.set(key + "accountUpdate" + lang_en, "Account updated for the player : ");
+		messageYaml.set(key + "accountUpdate" + lang_fr, "Compte mis à jour pour le joueur : ");
 
 		messageYaml.set(key + "statsYamlOk" + lang_en, "The Stats.yml file has saved the level : ");
 		messageYaml.set(key + "statsYamlOk" + lang_fr, "Le fichier Stats.yml a enregistré le niveau : ");
@@ -98,11 +98,11 @@ public class FilesManager {
 		messageYaml.set(key + "shame" + lang_en, "Oh no !");
 		messageYaml.set(key + "shame" + lang_fr, "Oh non !");
 
-		messageYaml.set(key + "levelPlus" + lang_en, "You have gained a level! You are now at the level :");
-		messageYaml.set(key + "levelPlus" + lang_fr, "Vous avez gagné un niveau ! Vous êtes maintenant au niveau :");
+		messageYaml.set(key + "levelPlus" + lang_en, "You have gained a level! You are now at the level : ");
+		messageYaml.set(key + "levelPlus" + lang_fr, "Vous avez gagné un niveau ! Vous êtes maintenant au niveau : ");
 
-		messageYaml.set(key + "statusPlus" + lang_en, "You have a new status! You are now a:");
-		messageYaml.set(key + "statusPlus" + lang_fr, "Vous avez un nouveau statut ! Vous êtes maintenant un :");
+		messageYaml.set(key + "statusPlus" + lang_en, "You have a new status! You are now a : ");
+		messageYaml.set(key + "statusPlus" + lang_fr, "Vous avez un nouveau statut ! Vous êtes maintenant un : ");
 
 		messageYaml.set(key + "xpPlus" + lang_en, "You have gained : ");
 		messageYaml.set(key + "xpPlus" + lang_fr, "Vous avez gagné : ");
@@ -110,11 +110,26 @@ public class FilesManager {
 		messageYaml.set(key + "xpMinus" + lang_en, "You lost 25% of your xp !");
 		messageYaml.set(key + "xpMinus" + lang_fr, "Vous avez perdu 25% de votre xp !");
 
-		messageYaml.set(key + "backupErr" + lang_en, "Backup error on the file :");
-		messageYaml.set(key + "backupErr" + lang_fr, "Erreur de sauvegarde sur le fichier :");
+		messageYaml.set(key + "backupErr" + lang_en, "Backup error on the file : ");
+		messageYaml.set(key + "backupErr" + lang_fr, "Erreur de sauvegarde sur le fichier : ");
 
-		messageYaml.set(key + "backupOk" + lang_en, "Successful backup for file :");
-		messageYaml.set(key + "backupOk" + lang_fr, "Sauvegarde réussie pour le fichier :");
+		messageYaml.set(key + "backupOk" + lang_en, "Successful backup for file : ");
+		messageYaml.set(key + "backupOk" + lang_fr, "Sauvegarde réussie pour le fichier : ");
+
+		messageYaml.set(key + "GCashCreate" + lang_en, "Cash created for the guild : ");
+		messageYaml.set(key + "GCashCreate" + lang_fr, "Cash créé pour la guilde : ");
+
+		messageYaml.set(key + "guildUpdate" + lang_en, "Database updated for the guilds : ");
+		messageYaml.set(key + "guildUpdate" + lang_fr, "Base de données mis à jour pour la guilde : ");
+
+		messageYaml.set(key + "guildCreate" + lang_en, "Entry created for the guild : ");
+		messageYaml.set(key + "guildCreate" + lang_fr, "Entrée créée pour la guilde : ");
+
+		messageYaml.set(key + "guildExist" + lang_en, "This guild name is already taken !");
+		messageYaml.set(key + "guildExist" + lang_fr, "Ce nom de guilde est déjà pris !");
+
+		messageYaml.set(key + "hasGuild" + lang_en, "You already have a guild !");
+		messageYaml.set(key + "hasGuild" + lang_fr, "Vous avez déjà une guilde !");
 
 
 		saveFile(messageYaml);

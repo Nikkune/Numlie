@@ -32,6 +32,7 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onDisable()
 	{
+		guildsManager.unloadGuilds();
 		this.databaseManager.close();
 		logNormal("Bye !");
 	}
@@ -55,6 +56,7 @@ public class Main extends JavaPlugin {
 			filesManager.saveFile(configYaml);
 		}
 		guildsManager = new GuildsManager(INSTANCE);
+		guildsManager.loadGuilds();
 		playersManager = new PlayersManager(INSTANCE);
 	}
 
