@@ -95,7 +95,12 @@ public class PlayersManagers {
 	public void respawn(Player player)
 	{
 		String player_lang = main.filesManagers.getPlayerLang(player);
-		player.sendTitle(ChatColor.GREEN + main.filesManagers.getMessage(Messages.Shame, player_lang), ChatColor.GREEN + main.filesManagers.getMessage(Messages.Xp_Down, player_lang), 10, 20 * 2, 10);
-
+		int[] playerStats = main.filesManagers.getPlayersStats(player);
+		int xp = playerStats[0];
+		xp = (int) Math.round(xp * 0.75);
+		playerStats[0] = xp;
+		main.filesManagers.setPlayersStats(player, playerStats);
+		player.sendTitle(ChatColor.RED + main.filesManagers.getMessage(Messages.Shame, player_lang), ChatColor.RED + main.filesManagers.getMessage(Messages.Xp_Down, player_lang), 10, 20 * 2, 10);
+		updatePlayer(player);
 	}
 }

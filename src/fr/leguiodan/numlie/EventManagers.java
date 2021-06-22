@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -93,5 +94,12 @@ public class EventManagers implements Listener {
 				main.playersManagers.entityKilled(killer, killedLevel);
 			}
 		}
+	}
+
+	@EventHandler
+	public void onPlayerRespawn(PlayerRespawnEvent event)
+	{
+		Player player = event.getPlayer();
+		main.playersManagers.respawn(player);
 	}
 }
