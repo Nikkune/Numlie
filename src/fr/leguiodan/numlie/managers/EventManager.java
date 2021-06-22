@@ -1,8 +1,8 @@
 package fr.leguiodan.numlie.managers;
 
 import fr.leguiodan.numlie.Main;
-import fr.leguiodan.numlie.utilities.database.DbConnection;
 import fr.leguiodan.numlie.utilities.ScoreboardsHandler;
+import fr.leguiodan.numlie.utilities.database.DbConnection;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -44,6 +44,7 @@ public class EventManager implements Listener {
 			final Connection connection = dbConnection.getConnection();
 			main.databaseManager.createAccount(connection, player);
 			main.databaseManager.createPlayerCash(connection, player);
+			main.databaseManager.setOnline(connection, player.getUniqueId().toString());
 		} catch (SQLException e)
 		{
 			e.printStackTrace();
@@ -66,6 +67,7 @@ public class EventManager implements Listener {
 		{
 			final Connection connection = dbConnection.getConnection();
 			main.databaseManager.updatesPlayers(connection, player);
+			main.databaseManager.setOffline(connection, player.getUniqueId().toString());
 		} catch (SQLException e)
 		{
 			e.printStackTrace();

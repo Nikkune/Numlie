@@ -37,6 +37,13 @@ public class Main extends JavaPlugin {
 	public void onDisable()
 	{
 		guildsManager.unloadGuilds();
+		try
+		{
+			databaseManager.setOffline(databaseManager.getDbConnection().getConnection(), "server");
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
 		this.databaseManager.close();
 		logNormal("Bye !");
 	}
@@ -52,6 +59,7 @@ public class Main extends JavaPlugin {
 			try
 			{
 				databaseManager.updateStats(databaseManager.getDbConnection().getConnection());
+				databaseManager.setOnline(databaseManager.getDbConnection().getConnection(), "server");
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
