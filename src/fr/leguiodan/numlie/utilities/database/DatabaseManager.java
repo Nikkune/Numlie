@@ -68,6 +68,7 @@ public class DatabaseManager {
 		if (!hasAccount(connection, uuid))
 		{
 			final PreparedStatement preparedStatement;
+			final PreparedStatement preparedStatement2;
 			try
 			{
 				preparedStatement = connection.prepareStatement("INSERT INTO players(uuid,pseudo,link_key) VALUES (?,?,?)");
@@ -75,6 +76,10 @@ public class DatabaseManager {
 				preparedStatement.setString(2, player.getDisplayName());
 				preparedStatement.setString(3, link_key.toString());
 				preparedStatement.execute();
+				preparedStatement2 = connection.prepareStatement("INSERT INTO players(uuid,online) VALUES (?,?)");
+				preparedStatement2.setString(1, uuid.toString());
+				preparedStatement2.setBoolean(2, true);
+				preparedStatement2.execute();
 				Logger.logSuccess(main.filesManager.getMessage(Messages.Account_Created, lang) + " " + player.getDisplayName() + " !");
 			} catch (SQLException e)
 			{
@@ -328,6 +333,36 @@ public class DatabaseManager {
 		} else
 		{
 			player.sendMessage(main.filesManager.getMessage(Messages.Guild_Have, player_lang));
+		}
+	}
+
+	public void setOnline(Connection connection, String uuid)
+	{
+		final PreparedStatement preparedStatement;
+		try
+		{
+			preparedStatement = connection.prepareStatement("UPDATE online_status SET(online) VALUES(?) WHERE uuid = ?");
+			preparedStatement.setBoolean(1, true);
+			preparedStatement.setString(2, uuid);
+			preparedStatement.execute();
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public void setOffline(Connection connection, String uuid)
+	{
+		final PreparedStatement preparedStatement;
+		try
+		{
+			preparedStatement = connection.prepareStatement("UPDATE online_status SET(online) VALUES(?) WHERE uuid = ?");
+			preparedStatement.setBoolean(1, false);
+			preparedStatement.setString(2, uuid);
+			preparedStatement.execute();
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
 		}
 	}
 }
