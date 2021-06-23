@@ -59,13 +59,19 @@ public class Main extends JavaPlugin {
 			try
 			{
 				databaseManager.updateStats(databaseManager.getDbConnection().getConnection());
-				databaseManager.setOnline(databaseManager.getDbConnection().getConnection(), "server");
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
 			}
 			configYaml.set("Main.Reload", false);
 			filesManager.saveFile(configYaml);
+		}
+		try
+		{
+			databaseManager.setOnline(databaseManager.getDbConnection().getConnection(), "server");
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
 		}
 		guildsManager = new GuildsManager(INSTANCE);
 		guildsManager.loadGuilds();

@@ -341,7 +341,7 @@ public class DatabaseManager {
 		final PreparedStatement preparedStatement;
 		try
 		{
-			preparedStatement = connection.prepareStatement("UPDATE online_status SET(online) VALUES(?) WHERE uuid = ?");
+			preparedStatement = connection.prepareStatement("UPDATE online_status SET online = ? WHERE uuid = ?");
 			preparedStatement.setBoolean(1, true);
 			preparedStatement.setString(2, uuid);
 			preparedStatement.execute();
@@ -356,7 +356,7 @@ public class DatabaseManager {
 		final PreparedStatement preparedStatement;
 		try
 		{
-			preparedStatement = connection.prepareStatement("UPDATE online_status SET(online) VALUES(?) WHERE uuid = ?");
+			preparedStatement = connection.prepareStatement("UPDATE online_status SET online = ? WHERE uuid = ?");
 			preparedStatement.setBoolean(1, false);
 			preparedStatement.setString(2, uuid);
 			preparedStatement.execute();
