@@ -53,7 +53,7 @@ public class GuildsManager {
 		main.filesManager.getGuildsYaml().set(key + "Money", guild_money);
 		main.filesManager.getGuildsYaml().set(key + "Player Number", player_nbr);
 		main.filesManager.getGuildsYaml().set(key + "Owner UUID", owner_uuid);
-		main.filesManager.saveFile(main.filesManager.getGuildsYaml());
+		main.filesManager.saveFile(main.filesManager.getGuildsYaml(),true);
 		guild_list.put(owner_uuid, guild_id);
 		Logger.logSuccess(main.filesManager.getMessage(Messages.Guild_Cash_Create, main.filesManager.getLanguage()) + guild_name + " !");
 	}
@@ -98,27 +98,27 @@ public class GuildsManager {
 	{
 		String key = "Guilds." + guild_id + ".";
 		main.filesManager.getGuildsYaml().set(key + "Xp", guild_xp);
-		main.filesManager.saveFile(main.filesManager.getGuildsYaml());
+		main.filesManager.saveFile(main.filesManager.getGuildsYaml(),false);
 	}
 
 	public void setGuildLevel(int guild_id, int guild_Level)
 	{
 		String key = "Guilds." + guild_id + ".";
 		main.filesManager.getGuildsYaml().set(key + "Level", guild_Level);
-		main.filesManager.saveFile(main.filesManager.getGuildsYaml());
+		main.filesManager.saveFile(main.filesManager.getGuildsYaml(),false);
 	}
 
 	public void setGuildMoney(int guild_id, int guild_money)
 	{
 		String key = "Guilds." + guild_id + ".";
 		main.filesManager.getGuildsYaml().set(key + "Money", guild_money);
-		main.filesManager.saveFile(main.filesManager.getGuildsYaml());
+		main.filesManager.saveFile(main.filesManager.getGuildsYaml(),false);
 	}
 
 	public void setGuildNbr(int guild_id, int player_nbr)
 	{
 		String key = "Guilds." + guild_id + ".";
 		main.filesManager.getGuildsYaml().set(key + "Money", player_nbr);
-		main.filesManager.saveFile(main.filesManager.getGuildsYaml());
+		main.filesManager.saveFile(main.filesManager.getGuildsYaml(),false);
 	}
 }

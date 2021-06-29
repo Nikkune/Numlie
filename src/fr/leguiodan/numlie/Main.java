@@ -64,7 +64,7 @@ public class Main extends JavaPlugin {
 				e.printStackTrace();
 			}
 			configYaml.set("Main.Reload", false);
-			filesManager.saveFile(configYaml);
+			filesManager.saveFile(configYaml,true);
 		}
 		try
 		{

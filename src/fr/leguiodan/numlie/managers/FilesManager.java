@@ -133,7 +133,7 @@ public class FilesManager {
 		messageYaml.set(key + "hasGuild" + lang_fr, "Vous avez déjà une guilde !");
 
 
-		saveFile(messageYaml);
+		saveFile(messageYaml,true);
 	}
 
 	public String getMessage(Messages message, String lang)
@@ -168,7 +168,7 @@ public class FilesManager {
 		playersYaml.set("Players." + uuid + ".status", playerStats[3]);
 		playersYaml.set("Players." + uuid + ".playtime", playerStats[4]);
 		playersYaml.set("Players." + uuid + ".guild_id", playerStats[5]);
-		saveFile(playersYaml);
+		saveFile(playersYaml,false);
 	}
 
 	public int getXpNeed(int level)
@@ -195,20 +195,23 @@ public class FilesManager {
 		{
 			configYaml.set("Main.Reload", false);
 			configYaml.set("Main.Language", "EN");
-			saveFile(configYaml);
+			saveFile(configYaml,true);
 		}
 		messageUpdate();
 		Logger.logSuccess("inti Files ok !");
 	}
 
-	public void saveFile(YamlConfiguration yamlConfiguration)
+	public void saveFile(YamlConfiguration yamlConfiguration, boolean log)
 	{
 		if (yamlConfiguration == configYaml)
 		{
 			try
 			{
 				configYaml.save(configFile);
-				Logger.logSuccess(getMessage(Messages.Backup_Success, getLanguage()) + "Config.yml");
+				if (log)
+				{
+					Logger.logSuccess(getMessage(Messages.Backup_Success, getLanguage()) + "Config.yml");
+				}
 			} catch (IOException e)
 			{
 				Logger.logError(getMessage(Messages.Backup_Error, getLanguage()) + "Config.yml");
@@ -219,7 +222,10 @@ public class FilesManager {
 			try
 			{
 				messageYaml.save(messageFile);
-				Logger.logSuccess(getMessage(Messages.Backup_Success, getLanguage()) + "Messages.yml");
+				if (log)
+				{
+					Logger.logSuccess(getMessage(Messages.Backup_Success, getLanguage()) + "Messages.yml");
+				}
 			} catch (IOException e)
 			{
 				Logger.logError(getMessage(Messages.Backup_Error, getLanguage()) + "Messages.yml");
@@ -230,7 +236,10 @@ public class FilesManager {
 			try
 			{
 				guildsYaml.save(guildsFile);
-				Logger.logSuccess(getMessage(Messages.Backup_Success, getLanguage()) + "Guilds.yml");
+				if (log)
+				{
+					Logger.logSuccess(getMessage(Messages.Backup_Success, getLanguage()) + "Guild.yml");
+				}
 			} catch (IOException e)
 			{
 				Logger.logError(getMessage(Messages.Backup_Error, getLanguage()) + "Guilds.yml");
@@ -241,7 +250,10 @@ public class FilesManager {
 			try
 			{
 				playersYaml.save(playersFile);
-				Logger.logSuccess(getMessage(Messages.Backup_Success, getLanguage()) + "Players.yml");
+				if (log)
+				{
+					Logger.logSuccess(getMessage(Messages.Backup_Success, getLanguage()) + "Players.yml");
+				}
 			} catch (IOException e)
 			{
 				Logger.logError(getMessage(Messages.Backup_Error, getLanguage()) + "Players.yml");
@@ -252,7 +264,10 @@ public class FilesManager {
 			try
 			{
 				statsYaml.save(statsFile);
-				Logger.logSuccess(getMessage(Messages.Backup_Success, getLanguage()) + "Stats.yml");
+				if (log)
+				{
+					Logger.logSuccess(getMessage(Messages.Backup_Success, getLanguage()) + "Stats.yml");
+				}
 			} catch (IOException e)
 			{
 				Logger.logError(getMessage(Messages.Backup_Error, getLanguage()) + "Stats.yml");
@@ -265,14 +280,14 @@ public class FilesManager {
 	{
 		final String uuid = player.getUniqueId().toString();
 		playersYaml.set("Players." + uuid + ".link_key", link_key);
-		saveFile(playersYaml);
+		saveFile(playersYaml,false);
 	}
 
 	public void setPlayerLang(Player player, String lang)
 	{
 		final String uuid = player.getUniqueId().toString();
 		playersYaml.set("Players." + uuid + ".lang", lang);
-		saveFile(playersYaml);
+		saveFile(playersYaml,false);
 	}
 
 	public String getPlayerLang(Player player)

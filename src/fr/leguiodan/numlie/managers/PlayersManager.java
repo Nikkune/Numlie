@@ -72,12 +72,19 @@ public class PlayersManager {
 		String player_lang = main.filesManager.getPlayerLang(player);
 		final int xp_win = main.filesManager.getXpWin(entity_level);
 		int[] playerStats = main.filesManager.getPlayersStats(player);
-		int xp = playerStats[0];
-		xp = xp + xp_win;
-		playerStats[0] = xp;
-		main.filesManager.setPlayersStats(player, playerStats);
-		player.sendMessage(main.filesManager.getMessage(Messages.Xp_Up, player_lang) + xp_win + " xp");
-		updatePlayer(player);
+		if (playerStats[1] < 100)
+		{
+			int xp = playerStats[0];
+			xp = xp + xp_win;
+			playerStats[0] = xp;
+			main.filesManager.setPlayersStats(player, playerStats);
+			player.sendMessage(main.filesManager.getMessage(Messages.Xp_Up, player_lang) + xp_win + " xp");
+			updatePlayer(player);
+		}else
+		{
+			playerStats[0] = 0;
+			main.filesManager.setPlayersStats(player, playerStats);
+		}
 	}
 
 	public void levelPassed(Player player, int level)
