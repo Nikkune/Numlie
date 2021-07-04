@@ -80,7 +80,7 @@ public class DatabaseManager {
 				preparedStatement2.setString(1, uuid.toString());
 				preparedStatement2.setBoolean(2, true);
 				preparedStatement2.execute();
-				Logger.logSuccess(main.filesManager.getMessage(Messages.Account_Created, lang) + " " + player.getDisplayName() + " !");
+				Logger.logSuccess(main.filesManager.getMessage(Messages.Account_Created, lang) + player.getDisplayName() + " !");
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
@@ -136,7 +136,7 @@ public class DatabaseManager {
 				main.filesManager.setPlayersStats(player, playerStats);
 				main.filesManager.setLink_Key(player, link_key);
 				main.filesManager.setPlayerLang(player, player_lang);
-				Logger.logSuccess(main.filesManager.getMessage(Messages.Cash_Created, lang) + " " + player.getDisplayName() + " !");
+				Logger.logSuccess(main.filesManager.getMessage(Messages.Cash_Created, lang)+ player.getDisplayName() + " !");
 			}
 		} catch (SQLException e)
 		{
@@ -170,7 +170,7 @@ public class DatabaseManager {
 				preparedStatement.setString(6, player_lang);
 				preparedStatement.setString(7, uuid);
 				preparedStatement.execute();
-				Logger.logSuccess(main.filesManager.getMessage(Messages.Account_Updated, lang) + " " + player.getDisplayName() + " !");
+				Logger.logSuccess(main.filesManager.getMessage(Messages.Account_Updated, lang)+ player.getDisplayName() + " !");
 			} catch (SQLException e)
 			{
 				e.printStackTrace();

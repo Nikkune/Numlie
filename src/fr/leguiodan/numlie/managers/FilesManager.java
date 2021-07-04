@@ -105,8 +105,14 @@ public class FilesManager {
 		messageYaml.set(key + "backupErr" + lang_en, "Backup error on the file : ");
 		messageYaml.set(key + "backupErr" + lang_fr, "Erreur de sauvegarde sur le fichier : ");
 
-		messageYaml.set(key + "backupOk" + lang_en, "Successful backup for file : ");
-		messageYaml.set(key + "backupOk" + lang_fr, "Sauvegarde réussie pour le fichier : ");
+		messageYaml.set(key + "UILevel" + lang_en, "Level");
+		messageYaml.set(key + "UILevel" + lang_fr, "Niveau");
+
+		messageYaml.set(key + "UIMoney" + lang_en, "Money");
+		messageYaml.set(key + "UIMoney" + lang_fr, "Argent");
+
+		messageYaml.set(key + "UIPlaytime" + lang_en, "Playtime");
+		messageYaml.set(key + "UIPlaytime" + lang_fr, "Temps De Jeu");
 
 		saveFile(messageYaml,true);
 	}

@@ -15,6 +15,9 @@ public enum Messages {
 	Xp_Down("xpMinus"),
 	Backup_Error("backupErr"),
 	Backup_Success("backupOk"),
+	UI_Level("UILevel"),
+	UI_Money("UIMoney"),
+	UI_Playtime("UIPlaytime"),
 	;
 	final String key;
 

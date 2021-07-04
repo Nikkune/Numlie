@@ -1,6 +1,7 @@
 package fr.leguiodan.numlie.utilities;
 
 import fr.leguiodan.numlie.Main;
+import fr.leguiodan.numlie.utilities.enumerations.Messages;
 import fr.leguiodan.numlie.utilities.enumerations.Status;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -67,11 +68,11 @@ public class ScoreboardsHandler {
 			scoreboard.resetScores(score[i].toString());
 		}
 
-		final Score scoreLevel = objective.getScore(ChatColor.AQUA + "Level : " + level);
+		final Score scoreLevel = objective.getScore(ChatColor.AQUA + main.filesManager.getMessage(Messages.UI_Level, player_lang) + " : " + level);
 		final Score scoreXp = objective.getScore(ChatColor.BLUE + "Xp : " + xp + " / " + xp_need);
-		final Score scoreMoney = objective.getScore(ChatColor.GOLD + "Money : " + money + " Golds");
+		final Score scoreMoney = objective.getScore(ChatColor.GOLD + main.filesManager.getMessage(Messages.UI_Money, player_lang) + " : " + money + " Golds");
 		final Score scoreStatus = objective.getScore(status.getChatColor() + "Status : " + status.getDisplayName(player_lang));
-		final Score scorePlaytime = objective.getScore(ChatColor.RED + "Playtime : " + playtime + " min");
+		final Score scorePlaytime = objective.getScore(ChatColor.RED + main.filesManager.getMessage(Messages.UI_Playtime, player_lang) + " : " + playtime + " min");
 
 		scoreLevel.setScore(6);
 		scoreXp.setScore(5);
