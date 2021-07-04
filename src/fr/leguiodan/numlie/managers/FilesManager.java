@@ -108,22 +108,6 @@ public class FilesManager {
 		messageYaml.set(key + "backupOk" + lang_en, "Successful backup for file : ");
 		messageYaml.set(key + "backupOk" + lang_fr, "Sauvegarde réussie pour le fichier : ");
 
-		messageYaml.set(key + "GCashCreate" + lang_en, "Cash created for the guild : ");
-		messageYaml.set(key + "GCashCreate" + lang_fr, "Cash créé pour la guilde : ");
-
-		messageYaml.set(key + "guildUpdate" + lang_en, "Database updated for the guilds : ");
-		messageYaml.set(key + "guildUpdate" + lang_fr, "Base de données mis à jour pour la guilde : ");
-
-		messageYaml.set(key + "guildCreate" + lang_en, "Entry created for the guild : ");
-		messageYaml.set(key + "guildCreate" + lang_fr, "Entrée créée pour la guilde : ");
-
-		messageYaml.set(key + "guildExist" + lang_en, "This guild name is already taken !");
-		messageYaml.set(key + "guildExist" + lang_fr, "Ce nom de guilde est déjà pris !");
-
-		messageYaml.set(key + "hasGuild" + lang_en, "You already have a guild !");
-		messageYaml.set(key + "hasGuild" + lang_fr, "Vous avez déjà une guilde !");
-
-
 		saveFile(messageYaml,true);
 	}
 

@@ -15,11 +15,6 @@ public enum Messages {
 	Xp_Down("xpMinus"),
 	Backup_Error("backupErr"),
 	Backup_Success("backupOk"),
-	Guild_Cash_Create("GCashCreate"),
-	Guild_Updated("guildUpdate"),
-	Guild_Created("guildCreate"),
-	Guild_Exist("guildExist"),
-	Guild_Have("hasGuild"),
 	;
 	final String key;
 
