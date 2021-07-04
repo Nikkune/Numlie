@@ -88,27 +88,6 @@ public class DatabaseManager {
 		}
 	}
 
-	public void updateStats(Connection connection)
-	{
-		final PreparedStatement preparedStatement;
-		try
-		{
-			preparedStatement = connection.prepareStatement("SELECT * FROM stats");
-			final ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next())
-			{
-				int level = resultSet.getInt("level");
-				int max_pv = resultSet.getInt("max_pv");
-				int xp_need = resultSet.getInt("xp_need");
-				int xp_win = resultSet.getInt("xp_win");
-				main.filesManager.statsUpdate(level, max_pv, xp_need, xp_win);
-			}
-		} catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
 	public void createPlayerCash(Connection connection, Player player)
 	{
 		final String lang = main.filesManager.getLanguage();
@@ -202,6 +181,27 @@ public class DatabaseManager {
 			preparedStatement.setBoolean(1, false);
 			preparedStatement.setString(2, uuid);
 			preparedStatement.execute();
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public void updateStats(Connection connection)
+	{
+		final PreparedStatement preparedStatement;
+		try
+		{
+			preparedStatement = connection.prepareStatement("SELECT * FROM stats");
+			final ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next())
+			{
+				int level = resultSet.getInt("level");
+				int max_pv = resultSet.getInt("max_pv");
+				int xp_need = resultSet.getInt("xp_need");
+				int xp_win = resultSet.getInt("xp_win");
+				main.filesManager.statsUpdate(level, max_pv, xp_need, xp_win);
+			}
 		} catch (SQLException e)
 		{
 			e.printStackTrace();

@@ -1,6 +1,6 @@
 package fr.leguiodan.numlie;
 
-import fr.leguiodan.numlie.managers.EventManager;
+import fr.leguiodan.numlie.managers.EventsManager;
 import fr.leguiodan.numlie.managers.FilesManager;
 import fr.leguiodan.numlie.managers.PlayersManager;
 import fr.leguiodan.numlie.utilities.database.DatabaseManager;
@@ -50,7 +50,7 @@ public class Main extends JavaPlugin {
 		YamlConfiguration configYaml = filesManager.getConfigYaml();
 		PluginManager pluginManager = Bukkit.getServer().getPluginManager();
 		databaseManager = new DatabaseManager(INSTANCE);
-		pluginManager.registerEvents(new EventManager(INSTANCE), this);
+		pluginManager.registerEvents(new EventsManager(INSTANCE), this);
 		if (configYaml.getBoolean("Main.Reload"))
 		{
 			try
@@ -71,6 +71,7 @@ public class Main extends JavaPlugin {
 			e.printStackTrace();
 		}
 		playersManager = new PlayersManager(INSTANCE);
+		filesManager.getAllInstances();
 	}
 
 	public DatabaseManager getDatabaseManager()

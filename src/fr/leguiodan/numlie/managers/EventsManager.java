@@ -21,13 +21,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EventManager implements Listener {
+public class EventsManager implements Listener {
 
 	private final Main main;
 	private final Map<Player, Integer> taskMin_map;
 	private final Map<Player, Integer> task_map;
 
-	public EventManager(Main main)
+	public EventsManager(Main main)
 	{
 		this.main = main;
 		this.taskMin_map = new HashMap<>();
