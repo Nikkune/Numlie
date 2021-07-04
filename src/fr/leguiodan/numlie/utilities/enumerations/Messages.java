@@ -15,6 +15,8 @@ public enum Messages {
 	Xp_Down("xpMinus"),
 	Backup_Error("backupErr"),
 	Backup_Success("backupOk"),
+	Delete_Error("deleteErr"),
+	Delete_Success("deleteOk"),
 	UI_Level("UILevel"),
 	UI_Money("UIMoney"),
 	UI_Playtime("UIPlaytime"),

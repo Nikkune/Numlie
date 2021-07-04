@@ -80,7 +80,7 @@ public class PlayersManager {
 			main.filesManager.setPlayersStats(player, playerStats);
 			player.sendMessage(main.filesManager.getMessage(Messages.Xp_Up, player_lang) + xp_win + " xp");
 			updatePlayer(player);
-		}else
+		} else
 		{
 			playerStats[0] = 0;
 			main.filesManager.setPlayersStats(player, playerStats);

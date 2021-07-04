@@ -2,6 +2,7 @@ package fr.leguiodan.numlie;
 
 import fr.leguiodan.numlie.managers.EventsManager;
 import fr.leguiodan.numlie.managers.FilesManager;
+import fr.leguiodan.numlie.managers.InstancesManager;
 import fr.leguiodan.numlie.managers.PlayersManager;
 import fr.leguiodan.numlie.utilities.database.DatabaseManager;
 import org.bukkit.Bukkit;
@@ -20,6 +21,7 @@ public class Main extends JavaPlugin {
 	public DatabaseManager databaseManager;
 	public FilesManager filesManager;
 	public PlayersManager playersManager;
+	public InstancesManager instancesManager;
 
 	@Override
 	public void onEnable()
@@ -61,7 +63,7 @@ public class Main extends JavaPlugin {
 				e.printStackTrace();
 			}
 			configYaml.set("Main.Reload", false);
-			filesManager.saveFile(configYaml,true);
+			filesManager.saveFile(configYaml, true);
 		}
 		try
 		{
@@ -71,7 +73,7 @@ public class Main extends JavaPlugin {
 			e.printStackTrace();
 		}
 		playersManager = new PlayersManager(INSTANCE);
-		filesManager.getAllInstances();
+		instancesManager = new InstancesManager(INSTANCE, filesManager);
 	}
 
 	public DatabaseManager getDatabaseManager()

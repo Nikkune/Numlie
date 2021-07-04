@@ -1,5 +1,6 @@
 package fr.leguiodan.numlie.managers;
 
+import com.sun.istack.internal.NotNull;
 import fr.leguiodan.numlie.Main;
 import fr.leguiodan.numlie.utilities.Logger;
 import fr.leguiodan.numlie.utilities.enumerations.Messages;
@@ -9,8 +10,12 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FilesManager {
+
+	private final Main main;
 
 	private final File playersFile;
 	private final File statsFile;
@@ -24,6 +29,8 @@ public class FilesManager {
 
 	public FilesManager(Main main)
 	{
+		this.main = main;
+
 		this.playersFile = new File(main.getDataFolder(), "/players.yml");
 		this.statsFile = new File(main.getDataFolder(), "/stats.yml");
 		this.configFile = new File(main.getDataFolder(), "/config.yml");
@@ -42,6 +49,7 @@ public class FilesManager {
 		{
 			configYaml.set("Main.Reload", false);
 			configYaml.set("Main.Language", "EN");
+			configYaml.set("Instances.Numbers", 0);
 			saveFile(configYaml, true);
 		}
 		messageUpdate();
@@ -106,6 +114,34 @@ public class FilesManager {
 				Logger.logError(getMessage(Messages.Backup_Error, getLanguage()) + "Stats.yml");
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public void saveFile(YamlConfiguration yamlConfiguration, File file, boolean log)
+	{
+		try
+		{
+			yamlConfiguration.save(file);
+			if (log)
+			{
+				Logger.logSuccess(getMessage(Messages.Backup_Success, getLanguage()) + file.getName());
+			}
+		} catch (IOException e)
+		{
+			Logger.logError(getMessage(Messages.Backup_Error, getLanguage()) + file.getName());
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteFile(File file)
+	{
+		String fileName = file.getName();
+		if (file.delete())
+		{
+			Logger.logSuccess(getMessage(Messages.Delete_Success, getLanguage()) + fileName);
+		} else
+		{
+			Logger.logError(getMessage(Messages.Delete_Error, getLanguage()) + fileName);
 		}
 	}
 
@@ -242,6 +278,15 @@ public class FilesManager {
 		messageYaml.set(key + "backupErr" + lang_en, "Backup error on the file : ");
 		messageYaml.set(key + "backupErr" + lang_fr, "Erreur de sauvegarde sur le fichier : ");
 
+		messageYaml.set(key + "backupOk" + lang_en, "Successful backup for file : ");
+		messageYaml.set(key + "backupOk" + lang_fr, "Sauvegarde réussie pour le fichier : ");
+
+		messageYaml.set(key + "deleteErr" + lang_en, "Delete error for the file : ");
+		messageYaml.set(key + "deleteErr" + lang_fr, "Erreur de suppression pour le fichier : ");
+
+		messageYaml.set(key + "deleteOk" + lang_en, "Successful deletion for the file : ");
+		messageYaml.set(key + "deleteOk" + lang_fr, "Suppression réussie du fichier : ");
+
 		messageYaml.set(key + "UILevel" + lang_en, "Level");
 		messageYaml.set(key + "UILevel" + lang_fr, "Niveau");
 
@@ -280,6 +325,101 @@ public class FilesManager {
 			return nameLower.endsWith(".yml");
 		};
 		return instancesFile.listFiles(filenameFilter);
+	}
+
+	public int getInstancesNumbers()
+	{
+		return configYaml.getInt("Instances.Numbers");
+	}
+
+	public void setInstancesNumbers(int nbr)
+	{
+		configYaml.set("Instances.Numbers", nbr);
+		saveFile(configYaml, true);
+	}
+
+	public File getInstancesFile()
+	{
+		return instancesFile;
+	}
+
+	public List<Player> getPlayersOfInstance(@NotNull File instanceFile)
+	{
+		YamlConfiguration instanceYaml = YamlConfiguration.loadConfiguration(instanceFile);
+		int number = instanceYaml.getInt("Players Numbers");
+		int x = 0;
+		List<Player> playerList = new ArrayList<>();
+		while (x < number)
+		{
+			String playerUUID = instanceYaml.getString("Players." + x);
+			Player player = main.getServer().getPlayer(playerUUID);
+			playerList.add(player);
+			x++;
+		}
+		return playerList;
+	}
+
+	public int getPlayersIdInInstance(@NotNull File instanceFile, Player player)
+	{
+		YamlConfiguration instanceYaml = YamlConfiguration.loadConfiguration(instanceFile);
+		int number = instanceYaml.getInt("Players Numbers");
+		int x = 0;
+		while (x < number)
+		{
+			if (player.getUniqueId().toString().equalsIgnoreCase(instanceYaml.getString("Players." + x)))
+			{
+				return x;
+			}
+			x++;
+		}
+		return 99;
+	}
+
+	public File getInstanceViaCode(String code)
+	{
+		File[] files = getAllInstances();
+		for (File file : files)
+		{
+			YamlConfiguration intance = YamlConfiguration.loadConfiguration(file);
+			String instanceCode = intance.getString("Invite Code");
+			if (instanceCode.equalsIgnoreCase(code))
+			{
+				return file;
+			}
+		}
+		return null;
+	}
+
+	public File getInstanceOfPlayer(Player player)
+	{
+		File[] files = getAllInstances();
+		for (File file : files)
+		{
+			List<Player> players = getPlayersOfInstance(file);
+			if (players.contains(player))
+			{
+				Logger.logSuccess("This File is the One" + file.getName());
+				return file;
+			}
+		}
+		return null;
+	}
+
+	public Player getPlayerWhoCreateInstance(@NotNull File instanceFile)
+	{
+		YamlConfiguration instanceYaml = YamlConfiguration.loadConfiguration(instanceFile);
+		String playerUUID = instanceYaml.getString("Players.0");
+		return main.getServer().getPlayer(playerUUID);
+	}
+
+	public void addPlayerToInstance(@NotNull File instanceFile, Player player)
+	{
+		YamlConfiguration instanceYaml = YamlConfiguration.loadConfiguration(instanceFile);
+		int nbr = instanceYaml.getInt("Players Numbers");
+		instanceYaml.set("Players." + nbr, player.getUniqueId().toString());
+		instanceYaml.set("Players Numbers", nbr + 1);
+		saveFile(instanceYaml, instanceFile, true);
+		player.sendMessage("You are in the instance : " + instanceFile.getName().substring(0, instanceFile.getName().length() - 4));
 	}
 	//endregion
 }

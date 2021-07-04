@@ -88,6 +88,17 @@ public class EventsManager implements Listener {
 			if (HOSTILE_LIST.contains(death.getType()))
 			{
 				main.playersManager.entityKilled(killer, level);
+				if (main.instancesManager.isInAInstance(killer))
+				{
+					List<Player> players = main.filesManager.getPlayersOfInstance(main.filesManager.getInstanceOfPlayer(killer));
+					for (Player player : players)
+					{
+						if (player != killer)
+						{
+							main.playersManager.entityKilled(killer, level);
+						}
+					}
+				}
 			}
 			if (death.getType() == EntityType.PLAYER)
 			{
@@ -95,6 +106,17 @@ public class EventsManager implements Listener {
 				int[] killedStats = main.filesManager.getPlayersStats(killed);
 				int killedLevel = killedStats[1];
 				main.playersManager.entityKilled(killer, killedLevel);
+				if (main.instancesManager.isInAInstance(killer))
+				{
+					List<Player> players = main.filesManager.getPlayersOfInstance(main.filesManager.getInstanceOfPlayer(killer));
+					for (Player player : players)
+					{
+						if (player != killer)
+						{
+							main.playersManager.entityKilled(killer, killedLevel);
+						}
+					}
+				}
 			}
 		}
 	}
