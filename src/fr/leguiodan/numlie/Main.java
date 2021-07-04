@@ -2,7 +2,6 @@ package fr.leguiodan.numlie;
 
 import fr.leguiodan.numlie.managers.EventManager;
 import fr.leguiodan.numlie.managers.FilesManager;
-import fr.leguiodan.numlie.managers.GuildsManager;
 import fr.leguiodan.numlie.managers.PlayersManager;
 import fr.leguiodan.numlie.utilities.database.DatabaseManager;
 import org.bukkit.Bukkit;
@@ -21,7 +20,6 @@ public class Main extends JavaPlugin {
 	public DatabaseManager databaseManager;
 	public FilesManager filesManager;
 	public PlayersManager playersManager;
-	public GuildsManager guildsManager;
 
 	@Override
 	public void onEnable()
@@ -36,7 +34,6 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onDisable()
 	{
-		guildsManager.unloadGuilds();
 		try
 		{
 			databaseManager.setOffline(databaseManager.getDbConnection().getConnection(), "server");
@@ -73,8 +70,6 @@ public class Main extends JavaPlugin {
 		{
 			e.printStackTrace();
 		}
-		guildsManager = new GuildsManager(INSTANCE);
-		guildsManager.loadGuilds();
 		playersManager = new PlayersManager(INSTANCE);
 	}
 

@@ -13,12 +13,10 @@ public class FilesManager {
 
 	private final File playersFile;
 	private final File statsFile;
-	private final File guildsFile;
 	private final File configFile;
 	private final File messageFile;
 	private final YamlConfiguration playersYaml;
 	private final YamlConfiguration statsYaml;
-	private final YamlConfiguration guildsYaml;
 	private final YamlConfiguration configYaml;
 	private final YamlConfiguration messageYaml;
 
@@ -26,13 +24,11 @@ public class FilesManager {
 	{
 		this.playersFile = new File(main.getDataFolder(), "/players.yml");
 		this.statsFile = new File(main.getDataFolder(), "/stats.yml");
-		this.guildsFile = new File(main.getDataFolder(), "/guilds.yml");
 		this.configFile = new File(main.getDataFolder(), "/config.yml");
 		this.messageFile = new File(main.getDataFolder(), "/message.yml");
 
 		this.playersYaml = YamlConfiguration.loadConfiguration(playersFile);
 		this.statsYaml = YamlConfiguration.loadConfiguration(statsFile);
-		this.guildsYaml = YamlConfiguration.loadConfiguration(guildsFile);
 		this.configYaml = YamlConfiguration.loadConfiguration(configFile);
 		this.messageYaml = YamlConfiguration.loadConfiguration(messageFile);
 	}
@@ -40,11 +36,6 @@ public class FilesManager {
 	public YamlConfiguration getPlayersYaml()
 	{
 		return playersYaml;
-	}
-
-	public YamlConfiguration getGuildsYaml()
-	{
-		return guildsYaml;
 	}
 
 	public YamlConfiguration getConfigYaml()
@@ -149,13 +140,12 @@ public class FilesManager {
 	public int[] getPlayersStats(Player player)
 	{
 		final String uuid = player.getUniqueId().toString();
-		int[] playerStats = new int[6];
+		int[] playerStats = new int[5];
 		playerStats[0] = playersYaml.getInt("Players." + uuid + ".xp");
 		playerStats[1] = playersYaml.getInt("Players." + uuid + ".level");
 		playerStats[2] = playersYaml.getInt("Players." + uuid + ".money");
 		playerStats[3] = playersYaml.getInt("Players." + uuid + ".status");
 		playerStats[4] = playersYaml.getInt("Players." + uuid + ".playtime");
-		playerStats[5] = playersYaml.getInt("Players." + uuid + ".guild_id");
 		return playerStats;
 	}
 
@@ -167,7 +157,6 @@ public class FilesManager {
 		playersYaml.set("Players." + uuid + ".money", playerStats[2]);
 		playersYaml.set("Players." + uuid + ".status", playerStats[3]);
 		playersYaml.set("Players." + uuid + ".playtime", playerStats[4]);
-		playersYaml.set("Players." + uuid + ".guild_id", playerStats[5]);
 		saveFile(playersYaml,false);
 	}
 
@@ -229,20 +218,6 @@ public class FilesManager {
 			} catch (IOException e)
 			{
 				Logger.logError(getMessage(Messages.Backup_Error, getLanguage()) + "Messages.yml");
-				e.printStackTrace();
-			}
-		} else if (yamlConfiguration == guildsYaml)
-		{
-			try
-			{
-				guildsYaml.save(guildsFile);
-				if (log)
-				{
-					Logger.logSuccess(getMessage(Messages.Backup_Success, getLanguage()) + "Guild.yml");
-				}
-			} catch (IOException e)
-			{
-				Logger.logError(getMessage(Messages.Backup_Error, getLanguage()) + "Guilds.yml");
 				e.printStackTrace();
 			}
 		} else if (yamlConfiguration == playersYaml)

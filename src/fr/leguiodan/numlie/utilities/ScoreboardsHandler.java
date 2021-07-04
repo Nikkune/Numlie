@@ -20,7 +20,6 @@ public class ScoreboardsHandler {
 		final int money = playersYaml.getInt("Players." + uuid + ".money");
 		final int status_id = playersYaml.getInt("Players." + uuid + ".status");
 		final int playtime = playersYaml.getInt("Players." + uuid + ".playtime");
-		final int guild_id = playersYaml.getInt("Players." + uuid + ".guild_id");
 		final int xp_need = main.filesManager.getXpNeed(level);
 		final Status status = Status.idToStatus(status_id);
 
@@ -35,14 +34,12 @@ public class ScoreboardsHandler {
 		final Score scoreMoney = objective.getScore(ChatColor.GOLD + "You have " + money + " Golds");
 		final Score scoreStatus = objective.getScore(status.getChatColor() + "You are a " + status.getDisplayName(player_lang));
 		final Score scorePlaytime = objective.getScore(ChatColor.RED + "Playtime : " + playtime + " min");
-		final Score scoreGuild = objective.getScore("Guild : " + guild_id);
 
 		scoreLevel.setScore(6);
 		scoreXp.setScore(5);
 		scoreMoney.setScore(4);
 		scoreStatus.setScore(3);
 		scorePlaytime.setScore(2);
-		scoreGuild.setScore(1);
 
 		player.setScoreboard(scoreboard);
 	}
@@ -58,7 +55,6 @@ public class ScoreboardsHandler {
 		final int money = playersYaml.getInt("Players." + uuid + ".money");
 		final int status_id = playersYaml.getInt("Players." + uuid + ".status");
 		final int playtime = playersYaml.getInt("Players." + uuid + ".playtime");
-		final int guild_id = playersYaml.getInt("Players." + uuid + ".guild_id");
 		final int xp_need = main.filesManager.getXpNeed(level);
 		final Status status = Status.idToStatus(status_id);
 
@@ -76,13 +72,11 @@ public class ScoreboardsHandler {
 		final Score scoreMoney = objective.getScore(ChatColor.GOLD + "Money : " + money + " Golds");
 		final Score scoreStatus = objective.getScore(status.getChatColor() + "Status : " + status.getDisplayName(player_lang));
 		final Score scorePlaytime = objective.getScore(ChatColor.RED + "Playtime : " + playtime + " min");
-		final Score scoreGuild = objective.getScore("Guild : " + guild_id);
 
 		scoreLevel.setScore(6);
 		scoreXp.setScore(5);
 		scoreMoney.setScore(4);
 		scoreStatus.setScore(3);
 		scorePlaytime.setScore(2);
-		scoreGuild.setScore(1);
 	}
 }
