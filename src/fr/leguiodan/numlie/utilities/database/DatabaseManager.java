@@ -106,6 +106,7 @@ public class DatabaseManager {
 				String link_key = resultSet.getString("link_key");
 				int playtime = resultSet.getInt("playtime");
 				String player_lang = resultSet.getString("lang");
+				int title_type = resultSet.getInt("titleType");
 				int[] playerStats = new int[5];
 				playerStats[0] = xp;
 				playerStats[1] = level;
@@ -115,6 +116,7 @@ public class DatabaseManager {
 				main.filesManager.setPlayersStats(player, playerStats);
 				main.filesManager.setLink_Key(player, link_key);
 				main.filesManager.setPlayerLang(player, player_lang);
+				main.filesManager.setPlayerTitle(player, title_type);
 				Logger.logSuccess(main.filesManager.getMessage(Messages.Cash_Created, lang) + player.getDisplayName() + " !");
 			}
 		} catch (SQLException e)
@@ -136,18 +138,20 @@ public class DatabaseManager {
 			final int status = playersSection.getInt("status");
 			final int playtime = playersSection.getInt("playtime");
 			String player_lang = playersSection.getString("lang");
+			int title_type = playersSection.getInt("title");
 			String uuid = player.getUniqueId().toString();
 			final PreparedStatement preparedStatement;
 			try
 			{
-				preparedStatement = connection.prepareStatement("UPDATE players SET xp = ?, level = ?, money = ?, status = ?, playtime = ?, lang = ? WHERE uuid = ?");
+				preparedStatement = connection.prepareStatement("UPDATE players SET xp = ?, level = ?, money = ?, status = ?, playtime = ?, lang = ?, titleType = ? WHERE uuid = ?");
 				preparedStatement.setInt(1, xp);
 				preparedStatement.setInt(2, level);
 				preparedStatement.setInt(3, money);
 				preparedStatement.setInt(4, status);
 				preparedStatement.setInt(5, playtime);
 				preparedStatement.setString(6, player_lang);
-				preparedStatement.setString(7, uuid);
+				preparedStatement.setInt(7, title_type);
+				preparedStatement.setString(8, uuid);
 				preparedStatement.execute();
 				Logger.logSuccess(main.filesManager.getMessage(Messages.Account_Updated, lang) + player.getDisplayName() + " !");
 			} catch (SQLException e)

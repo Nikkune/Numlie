@@ -172,6 +172,19 @@ public class FilesManager {
 		return playersYaml.getString("Players." + uuid + ".lang");
 	}
 
+	public void setPlayerTitle(Player player, int title_type)
+	{
+		final String uuid = player.getUniqueId().toString();
+		playersYaml.set("Players." + uuid + ".title", title_type);
+		saveFile(playersYaml, false);
+	}
+
+	public int getPlayerTitle(Player player)
+	{
+		final String uuid = player.getUniqueId().toString();
+		return playersYaml.getInt("Players." + uuid + ".title");
+	}
+
 	public int[] getPlayersStats(Player player)
 	{
 		final String uuid = player.getUniqueId().toString();

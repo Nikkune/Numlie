@@ -4,13 +4,17 @@ import fr.leguiodan.numlie.Main;
 import fr.leguiodan.numlie.utilities.ChatHandler;
 import fr.leguiodan.numlie.utilities.ScoreboardsHandler;
 import fr.leguiodan.numlie.utilities.database.DbConnection;
+import fr.leguiodan.numlie.utilities.enumerations.Status;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -139,5 +143,15 @@ public class EventsManager implements Listener {
 		String message = event.getMessage();
 		Player sender = event.getPlayer();
 		event.setFormat(ChatHandler.setChatMessage(main, message, sender));
+	}
+
+	@EventHandler
+	public void onPlayerDeath(PlayerDeathEvent event)
+	{
+		final String uuid = event.getEntity().getUniqueId().toString();
+		final YamlConfiguration playersYaml = main.filesManager.getPlayersYaml();
+		final int status_id = playersYaml.getInt("Players." + uuid + ".status");
+		final Status status = Status.idToStatus(status_id);
+		event.setDeathMessage(ChatHandler.setGlobalMessage(status.getChatColor() + event.getEntity().getDisplayName() + " died !"));
 	}
 }

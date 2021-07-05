@@ -91,25 +91,49 @@ public class PlayersManager {
 	public void levelPassed(Player player, int level)
 	{
 		String player_lang = main.filesManager.getPlayerLang(player);
-		player.sendTitle(ChatColor.GREEN + main.filesManager.getMessage(Messages.Congratulations, player_lang), ChatColor.GREEN + main.filesManager.getMessage(Messages.Level_Up, player_lang) + level, 10, 20 * 2, 10);
+		int title_type = main.filesManager.getPlayerTitle(player);
+		if (title_type == 1)
+		{
+			player.sendMessage(ChatHandler.setSuccessMessage(main.filesManager.getMessage(Messages.Congratulations, player_lang)));
+			player.sendMessage(ChatHandler.setSuccessMessage(main.filesManager.getMessage(Messages.Level_Up, player_lang) + level));
+		} else
+		{
+			player.sendTitle(ChatColor.GREEN + main.filesManager.getMessage(Messages.Congratulations, player_lang), ChatColor.GREEN + main.filesManager.getMessage(Messages.Level_Up, player_lang) + level, 10, 20 * 2, 10);
+		}
 	}
 
 	public void statusPassed(Player player, int status_id)
 	{
 		String player_lang = main.filesManager.getPlayerLang(player);
+		int title_type = main.filesManager.getPlayerTitle(player);
 		Status status = Status.idToStatus(status_id);
-		player.sendTitle(ChatColor.GREEN + main.filesManager.getMessage(Messages.Congratulations, player_lang), ChatColor.GREEN + main.filesManager.getMessage(Messages.Status_Up, player_lang) + status.getChatColor() + status.getDisplayName(player_lang), 10, 20 * 2, 10);
+		if (title_type == 1)
+		{
+			player.sendMessage(ChatHandler.setSuccessMessage(main.filesManager.getMessage(Messages.Congratulations, player_lang)));
+			player.sendMessage(ChatHandler.setSuccessMessage(main.filesManager.getMessage(Messages.Status_Up, player_lang) + status.getChatColor() + status.getDisplayName(player_lang)));
+		} else
+		{
+			player.sendTitle(ChatColor.GREEN + main.filesManager.getMessage(Messages.Congratulations, player_lang), ChatColor.GREEN + main.filesManager.getMessage(Messages.Status_Up, player_lang) + status.getChatColor() + status.getDisplayName(player_lang), 10, 20 * 2, 10);
+		}
 	}
 
 	public void respawn(Player player)
 	{
 		String player_lang = main.filesManager.getPlayerLang(player);
+		int title_type = main.filesManager.getPlayerTitle(player);
 		int[] playerStats = main.filesManager.getPlayersStats(player);
 		int xp = playerStats[0];
 		xp = (int) Math.round(xp * 0.75);
 		playerStats[0] = xp;
 		main.filesManager.setPlayersStats(player, playerStats);
-		player.sendTitle(ChatColor.RED + main.filesManager.getMessage(Messages.Shame, player_lang), ChatColor.RED + main.filesManager.getMessage(Messages.Xp_Down, player_lang), 10, 20 * 2, 10);
+		if (title_type == 1)
+		{
+			player.sendMessage(ChatHandler.setErrorMessage(main.filesManager.getMessage(Messages.Shame, player_lang)));
+			player.sendMessage(ChatHandler.setErrorMessage(main.filesManager.getMessage(Messages.Xp_Down, player_lang)));
+		} else
+		{
+			player.sendTitle(ChatColor.RED + main.filesManager.getMessage(Messages.Shame, player_lang), ChatColor.RED + main.filesManager.getMessage(Messages.Xp_Down, player_lang), 10, 20 * 2, 10);
+		}
 		ScoreboardsHandler.createScoreboard(player, main);
 		updatePlayer(player);
 	}
