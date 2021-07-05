@@ -2,6 +2,7 @@ package fr.leguiodan.numlie.managers;
 
 import com.sun.istack.internal.NotNull;
 import fr.leguiodan.numlie.Main;
+import fr.leguiodan.numlie.utilities.ChatHandler;
 import fr.leguiodan.numlie.utilities.Logger;
 import fr.leguiodan.numlie.utilities.enumerations.Messages;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -296,6 +297,15 @@ public class FilesManager {
 		messageYaml.set(key + "UIPlaytime" + lang_en, "Playtime");
 		messageYaml.set(key + "UIPlaytime" + lang_fr, "Temps De Jeu");
 
+		messageYaml.set(key + "instanceJoin" + lang_en, "You are in the instance : ");
+		messageYaml.set(key + "instanceJoin" + lang_fr, "Vous êtes dans l'instance : ");
+
+		messageYaml.set(key + "instanceHas" + lang_en, "You are already in an Instance / Group !");
+		messageYaml.set(key + "instanceHas" + lang_fr, "Vous êtes déjà dans une Instance/Groupe !");
+
+		messageYaml.set(key + "instanceCodeErr" + lang_en, "Incorrect instance code !!");
+		messageYaml.set(key + "instanceCodeErr" + lang_fr, "Code d'instance incorrect !!");
+
 		saveFile(messageYaml, true);
 	}
 
@@ -419,7 +429,7 @@ public class FilesManager {
 		instanceYaml.set("Players." + nbr, player.getUniqueId().toString());
 		instanceYaml.set("Players Numbers", nbr + 1);
 		saveFile(instanceYaml, instanceFile, true);
-		player.sendMessage("You are in the instance : " + instanceFile.getName().substring(0, instanceFile.getName().length() - 4));
+		player.sendMessage(ChatHandler.setInfoMessage(getMessage(Messages.Join_Instance, getPlayerLang(player)) + instanceFile.getName().substring(0, instanceFile.getName().length() - 4)));
 	}
 	//endregion
 }

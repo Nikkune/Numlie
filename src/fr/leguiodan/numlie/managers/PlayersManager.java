@@ -1,6 +1,7 @@
 package fr.leguiodan.numlie.managers;
 
 import fr.leguiodan.numlie.Main;
+import fr.leguiodan.numlie.utilities.ChatHandler;
 import fr.leguiodan.numlie.utilities.ScoreboardsHandler;
 import fr.leguiodan.numlie.utilities.enumerations.Messages;
 import fr.leguiodan.numlie.utilities.enumerations.Status;
@@ -78,7 +79,7 @@ public class PlayersManager {
 			xp = xp + xp_win;
 			playerStats[0] = xp;
 			main.filesManager.setPlayersStats(player, playerStats);
-			player.sendMessage(main.filesManager.getMessage(Messages.Xp_Up, player_lang) + xp_win + " xp");
+			player.sendMessage(ChatHandler.setInfoMessage(main.filesManager.getMessage(Messages.Xp_Up, player_lang) + xp_win + " xp"));
 			updatePlayer(player);
 		} else
 		{
@@ -109,6 +110,7 @@ public class PlayersManager {
 		playerStats[0] = xp;
 		main.filesManager.setPlayersStats(player, playerStats);
 		player.sendTitle(ChatColor.RED + main.filesManager.getMessage(Messages.Shame, player_lang), ChatColor.RED + main.filesManager.getMessage(Messages.Xp_Down, player_lang), 10, 20 * 2, 10);
+		ScoreboardsHandler.createScoreboard(player, main);
 		updatePlayer(player);
 	}
 }

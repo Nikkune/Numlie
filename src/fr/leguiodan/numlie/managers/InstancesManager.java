@@ -1,7 +1,9 @@
 package fr.leguiodan.numlie.managers;
 
 import fr.leguiodan.numlie.Main;
+import fr.leguiodan.numlie.utilities.ChatHandler;
 import fr.leguiodan.numlie.utilities.Logger;
+import fr.leguiodan.numlie.utilities.enumerations.Messages;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -58,11 +60,11 @@ public class InstancesManager {
 				filesManager.addPlayerToInstance(instance, player);
 			} else
 			{
-				player.sendMessage("Wrong Code !!");
+				player.sendMessage(ChatHandler.setErrorMessage(filesManager.getMessage(Messages.Wrong_Instance_Code, filesManager.getPlayerLang(player))));
 			}
 		} else
 		{
-			player.sendMessage("You are already in an Instance/Group");
+			player.sendMessage(ChatHandler.setWarningMessage(filesManager.getMessage(Messages.Already_In_Instance, filesManager.getPlayerLang(player))));
 		}
 	}
 
@@ -95,7 +97,6 @@ public class InstancesManager {
 			List<Player> players = filesManager.getPlayersOfInstance(file);
 			return players.contains(player);
 		}
-		Logger.logError("Error For Instance Managers");
 		return false;
 	}
 }

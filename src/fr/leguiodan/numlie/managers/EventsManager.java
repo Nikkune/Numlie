@@ -1,6 +1,7 @@
 package fr.leguiodan.numlie.managers;
 
 import fr.leguiodan.numlie.Main;
+import fr.leguiodan.numlie.utilities.ChatHandler;
 import fr.leguiodan.numlie.utilities.ScoreboardsHandler;
 import fr.leguiodan.numlie.utilities.database.DbConnection;
 import org.bukkit.Bukkit;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -54,6 +56,7 @@ public class EventsManager implements Listener {
 		final int task2 = Bukkit.getScheduler().scheduleSyncRepeatingTask(main, () -> main.playersManager.updatePlayer(player), 0L, 20L);
 		taskMin_map.put(player, task);
 		task_map.put(player, task2);
+		event.setJoinMessage(ChatHandler.setJoinMessage(main, player));
 	}
 
 	@EventHandler
@@ -72,12 +75,14 @@ public class EventsManager implements Listener {
 		{
 			e.printStackTrace();
 		}
+		event.setQuitMessage(ChatHandler.setLeaveMessage(main, player));
 	}
 
 	@EventHandler
 	public void onMobKill(EntityDeathEvent event)
 	{
 		Entity death = event.getEntity();
+		event.setDroppedExp(0);
 		Player killer = event.getEntity().getKiller();
 		if (killer != null)
 		{
@@ -126,5 +131,13 @@ public class EventsManager implements Listener {
 	{
 		Player player = event.getPlayer();
 		main.playersManager.respawn(player);
+	}
+
+	@EventHandler
+	public void onPlayerChat(AsyncPlayerChatEvent event)
+	{
+		String message = event.getMessage();
+		Player sender = event.getPlayer();
+		event.setFormat(ChatHandler.setChatMessage(main, message, sender));
 	}
 }

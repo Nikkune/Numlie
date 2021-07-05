@@ -30,11 +30,11 @@ public class ScoreboardsHandler {
 		objective.setDisplayName(ChatColor.BOLD + "" + ChatColor.LIGHT_PURPLE + "Stats");
 		objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
-		final Score scoreLevel = objective.getScore(ChatColor.AQUA + "Level : " + level);
+		final Score scoreLevel = objective.getScore(ChatColor.AQUA + main.filesManager.getMessage(Messages.UI_Level, player_lang) + " : " + level);
 		final Score scoreXp = objective.getScore(ChatColor.BLUE + "Xp : " + xp + " / " + xp_need);
-		final Score scoreMoney = objective.getScore(ChatColor.GOLD + "You have " + money + " Golds");
-		final Score scoreStatus = objective.getScore(status.getChatColor() + "You are a " + status.getDisplayName(player_lang));
-		final Score scorePlaytime = objective.getScore(ChatColor.RED + "Playtime : " + playtime + " min");
+		final Score scoreMoney = objective.getScore(ChatColor.GOLD + main.filesManager.getMessage(Messages.UI_Money, player_lang) + " : " + money + " Golds");
+		final Score scoreStatus = objective.getScore(status.getChatColor() + "Status : " + status.getDisplayName(player_lang));
+		final Score scorePlaytime = objective.getScore(ChatColor.RED + main.filesManager.getMessage(Messages.UI_Playtime, player_lang) + " : " + playtime + " min");
 
 		scoreLevel.setScore(6);
 		scoreXp.setScore(5);
@@ -79,5 +79,7 @@ public class ScoreboardsHandler {
 		scoreMoney.setScore(4);
 		scoreStatus.setScore(3);
 		scorePlaytime.setScore(2);
+
+		player.setScoreboard(scoreboard);
 	}
 }

@@ -20,6 +20,9 @@ public enum Messages {
 	UI_Level("UILevel"),
 	UI_Money("UIMoney"),
 	UI_Playtime("UIPlaytime"),
+	Join_Instance("instanceJoin"),
+	Already_In_Instance("instanceHas"),
+	Wrong_Instance_Code("instanceCodeErr"),
 	;
 	final String key;
 
