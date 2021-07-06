@@ -1,12 +1,11 @@
 package fr.leguiodan.numlie.managers;
 
 import fr.leguiodan.numlie.Main;
-import fr.leguiodan.numlie.utilities.ChatHandler;
-import fr.leguiodan.numlie.utilities.ScoreboardsHandler;
+import fr.leguiodan.numlie.utilities.handlers.ChatHandler;
+import fr.leguiodan.numlie.utilities.handlers.ScoreboardsHandler;
 import fr.leguiodan.numlie.utilities.database.DbConnection;
 import fr.leguiodan.numlie.utilities.enumerations.Status;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;

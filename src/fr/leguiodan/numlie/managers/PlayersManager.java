@@ -1,8 +1,8 @@
 package fr.leguiodan.numlie.managers;
 
 import fr.leguiodan.numlie.Main;
-import fr.leguiodan.numlie.utilities.ChatHandler;
-import fr.leguiodan.numlie.utilities.ScoreboardsHandler;
+import fr.leguiodan.numlie.utilities.handlers.ChatHandler;
+import fr.leguiodan.numlie.utilities.handlers.ScoreboardsHandler;
 import fr.leguiodan.numlie.utilities.enumerations.Messages;
 import fr.leguiodan.numlie.utilities.enumerations.Status;
 import org.bukkit.ChatColor;

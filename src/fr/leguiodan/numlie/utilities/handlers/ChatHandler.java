@@ -1,4 +1,4 @@
-package fr.leguiodan.numlie.utilities;
+package fr.leguiodan.numlie.utilities.handlers;
 
 import com.sun.istack.internal.NotNull;
 import fr.leguiodan.numlie.Main;

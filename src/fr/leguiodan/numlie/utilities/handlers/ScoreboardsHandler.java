@@ -1,4 +1,4 @@
-package fr.leguiodan.numlie.utilities;
+package fr.leguiodan.numlie.utilities.handlers;
 
 import fr.leguiodan.numlie.Main;
 import fr.leguiodan.numlie.utilities.enumerations.Messages;
