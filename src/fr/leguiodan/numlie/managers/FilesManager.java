@@ -2,9 +2,9 @@ package fr.leguiodan.numlie.managers;
 
 import com.sun.istack.internal.NotNull;
 import fr.leguiodan.numlie.Main;
-import fr.leguiodan.numlie.utilities.handlers.ChatHandler;
 import fr.leguiodan.numlie.utilities.Logger;
 import fr.leguiodan.numlie.utilities.enumerations.Messages;
+import fr.leguiodan.numlie.utilities.handlers.ChatHandler;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -158,6 +158,11 @@ public class FilesManager {
 		playersYaml.set("Players." + uuid + ".link_key", link_key);
 		saveFile(playersYaml, false);
 	}
+	public String getLink_Key(Player player)
+	{
+		final String uuid = player.getUniqueId().toString();
+		return playersYaml.getString("Players." + uuid + ".link_key");
+	}
 
 	public void setPlayerLang(Player player, String lang)
 	{
@@ -176,7 +181,7 @@ public class FilesManager {
 	{
 		final String uuid = player.getUniqueId().toString();
 		playersYaml.set("Players." + uuid + ".title", title_type);
-		saveFile(playersYaml, false);
+		saveFile(playersYaml, true);
 	}
 
 	public int getPlayerTitle(Player player)
@@ -309,6 +314,21 @@ public class FilesManager {
 
 		messageYaml.set(key + "UIPlaytime" + lang_en, "Playtime");
 		messageYaml.set(key + "UIPlaytime" + lang_fr, "Temps De Jeu");
+
+		messageYaml.set(key + "UIChangeLang" + lang_en, "Change language to : ");
+		messageYaml.set(key + "UIChangeLang" + lang_fr, "Changer la langue pour : ");
+
+		messageYaml.set(key + "UIChangeTitle" + lang_en, "Change announce in : ");
+		messageYaml.set(key + "UIChangeTitle" + lang_fr, "Modifier l'annonce en : ");
+
+		messageYaml.set(key + "UIGetLinkKey" + lang_en, "Get the link_key !");
+		messageYaml.set(key + "UIGetLinkKey" + lang_fr, "Récupérer la link_key !");
+
+		messageYaml.set(key + "UIChat" + lang_en, "Chat message");
+		messageYaml.set(key + "UIChat" + lang_fr, "Message du chat");
+
+		messageYaml.set(key + "UITitle" + lang_en, "Title");
+		messageYaml.set(key + "UITitle" + lang_fr, "Titre");
 
 		messageYaml.set(key + "instanceJoin" + lang_en, "You are in the instance : ");
 		messageYaml.set(key + "instanceJoin" + lang_fr, "Vous êtes dans l'instance : ");

@@ -1,11 +1,11 @@
 package fr.leguiodan.numlie.managers;
 
 import fr.leguiodan.numlie.Main;
+import fr.leguiodan.numlie.utilities.enumerations.Status;
 import fr.leguiodan.numlie.utilities.handlers.ChatHandler;
 import fr.leguiodan.numlie.utilities.handlers.ScoreboardsHandler;
-import fr.leguiodan.numlie.utilities.database.DbConnection;
-import fr.leguiodan.numlie.utilities.enumerations.Status;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -14,13 +14,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -43,41 +45,31 @@ public class EventsManager implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
 		final Player player = event.getPlayer();
-		final DbConnection dbConnection = main.getDatabaseManager().getDbConnection();
-		try
-		{
-			final Connection connection = dbConnection.getConnection();
-			main.databaseManager.createAccount(connection, player);
-			main.databaseManager.createPlayerCash(connection, player);
-			main.databaseManager.setOnline(connection, player.getUniqueId().toString());
-		} catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
+		main.databaseManager.createAccount(player);
+		main.databaseManager.createPlayerCash(player);
+		main.databaseManager.setOnline(player.getUniqueId().toString());
 		ScoreboardsHandler.createScoreboard(player, main);
 		final int task = Bukkit.getScheduler().scheduleSyncRepeatingTask(main, () -> main.playersManager.updatePlayerMin(player), 20L * 60, 20L * 60);
 		final int task2 = Bukkit.getScheduler().scheduleSyncRepeatingTask(main, () -> main.playersManager.updatePlayer(player), 0L, 20L);
 		taskMin_map.put(player, task);
 		task_map.put(player, task2);
 		event.setJoinMessage(ChatHandler.setJoinMessage(main, player));
+
+		ItemStack stack = new ItemStack(Material.COMPASS, 1);
+		ItemMeta stackItemMeta = stack.getItemMeta();
+		stackItemMeta.setDisplayName("Settings");
+		stack.setItemMeta(stackItemMeta);
+		player.getInventory().setItem(17, stack);
 	}
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event)
 	{
 		final Player player = event.getPlayer();
-		final DbConnection dbConnection = main.getDatabaseManager().getDbConnection();
 		Bukkit.getScheduler().cancelTask(taskMin_map.get(player));
 		Bukkit.getScheduler().cancelTask(task_map.get(player));
-		try
-		{
-			final Connection connection = dbConnection.getConnection();
-			main.databaseManager.updatesPlayers(connection, player);
-			main.databaseManager.setOffline(connection, player.getUniqueId().toString());
-		} catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
+		main.databaseManager.updatesPlayers(player);
+		main.databaseManager.setOffline(player.getUniqueId().toString());
 		event.setQuitMessage(ChatHandler.setLeaveMessage(main, player));
 	}
 
@@ -152,5 +144,12 @@ public class EventsManager implements Listener {
 		final int status_id = playersYaml.getInt("Players." + uuid + ".status");
 		final Status status = Status.idToStatus(status_id);
 		event.setDeathMessage(ChatHandler.setGlobalMessage(status.getChatColor() + event.getEntity().getDisplayName() + " died !"));
+	}
+
+	@EventHandler
+	public void onClick(InventoryClickEvent event)
+	{
+		if (event.getSlotType() == InventoryType.SlotType.OUTSIDE) return;
+		main.inventoryManager.clickEvent(event);
 	}
 }

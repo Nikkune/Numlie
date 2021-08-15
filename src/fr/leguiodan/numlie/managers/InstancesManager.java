@@ -1,8 +1,8 @@
 package fr.leguiodan.numlie.managers;
 
 import fr.leguiodan.numlie.Main;
-import fr.leguiodan.numlie.utilities.handlers.ChatHandler;
 import fr.leguiodan.numlie.utilities.enumerations.Messages;
+import fr.leguiodan.numlie.utilities.handlers.ChatHandler;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 

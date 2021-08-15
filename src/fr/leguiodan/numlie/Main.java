@@ -1,16 +1,11 @@
 package fr.leguiodan.numlie;
 
-import fr.leguiodan.numlie.managers.EventsManager;
-import fr.leguiodan.numlie.managers.FilesManager;
-import fr.leguiodan.numlie.managers.InstancesManager;
-import fr.leguiodan.numlie.managers.PlayersManager;
+import fr.leguiodan.numlie.managers.*;
 import fr.leguiodan.numlie.utilities.database.DatabaseManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.sql.SQLException;
 
 import static fr.leguiodan.numlie.utilities.Logger.logNormal;
 
@@ -22,6 +17,7 @@ public class Main extends JavaPlugin {
 	public FilesManager filesManager;
 	public PlayersManager playersManager;
 	public InstancesManager instancesManager;
+	public InventoryManager inventoryManager;
 
 	@Override
 	public void onEnable()
@@ -36,13 +32,7 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onDisable()
 	{
-		try
-		{
-			databaseManager.setOffline(databaseManager.getDbConnection().getConnection(), "server");
-		} catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
+		databaseManager.setOffline("server");
 		this.databaseManager.close();
 		logNormal("Bye !");
 	}
@@ -55,25 +45,15 @@ public class Main extends JavaPlugin {
 		pluginManager.registerEvents(new EventsManager(INSTANCE), this);
 		if (configYaml.getBoolean("Main.Reload"))
 		{
-			try
-			{
-				databaseManager.updateStats(databaseManager.getDbConnection().getConnection());
-			} catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
+			databaseManager.updateStats();
 			configYaml.set("Main.Reload", false);
 			filesManager.saveFile(configYaml, true);
 		}
-		try
-		{
-			databaseManager.setOnline(databaseManager.getDbConnection().getConnection(), "server");
-		} catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
+		databaseManager.setOnline("server");
 		playersManager = new PlayersManager(INSTANCE);
 		instancesManager = new InstancesManager(INSTANCE, filesManager);
+		inventoryManager = new InventoryManager(INSTANCE);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> databaseManager.restartConnections(), 20L * 60 * 20, 20L * 60 * 20);
 	}
 
 	public DatabaseManager getDatabaseManager()

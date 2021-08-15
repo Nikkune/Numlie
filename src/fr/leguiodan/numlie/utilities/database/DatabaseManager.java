@@ -6,7 +6,6 @@ import fr.leguiodan.numlie.utilities.enumerations.Messages;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,7 +14,7 @@ import java.util.UUID;
 
 public class DatabaseManager {
 	private final Main main;
-	private final DbConnection dbConnection;
+	private DbConnection dbConnection;
 
 	public DatabaseManager(Main main)
 	{
@@ -34,17 +33,29 @@ public class DatabaseManager {
 		}
 	}
 
+	public void restartConnections()
+	{
+		try
+		{
+			this.dbConnection.close();
+			this.dbConnection = new DbConnection(new DbCredentials("w1.webstrator.fr", "weball", "Xra24?k3", "server_database", 3306), main);
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
 	public DbConnection getDbConnection()
 	{
 		return dbConnection;
 	}
 
-	public boolean hasAccount(Connection connection, UUID uuid)
+	public boolean hasAccount(UUID uuid)
 	{
 		final PreparedStatement preparedStatement;
 		try
 		{
-			preparedStatement = connection.prepareStatement("SELECT uuid FROM players WHERE uuid = ?");
+			preparedStatement = dbConnection.getConnection().prepareStatement("SELECT uuid FROM players WHERE uuid = ?");
 			preparedStatement.setString(1, uuid.toString());
 			final ResultSet resultSet = preparedStatement.executeQuery();
 			return resultSet.next();
@@ -55,7 +66,7 @@ public class DatabaseManager {
 		return false;
 	}
 
-	public void createAccount(Connection connection, Player player)
+	public void createAccount(Player player)
 	{
 		final UUID uuid = player.getUniqueId();
 		StringBuilder link_key = new StringBuilder();
@@ -65,18 +76,18 @@ public class DatabaseManager {
 			final Random random = new Random();
 			link_key.append(random.nextInt(10));
 		}
-		if (!hasAccount(connection, uuid))
+		if (!hasAccount(uuid))
 		{
 			final PreparedStatement preparedStatement;
 			final PreparedStatement preparedStatement2;
 			try
 			{
-				preparedStatement = connection.prepareStatement("INSERT INTO players(uuid,pseudo,link_key) VALUES (?,?,?)");
+				preparedStatement = dbConnection.getConnection().prepareStatement("INSERT INTO players(uuid,pseudo,link_key) VALUES (?,?,?)");
 				preparedStatement.setString(1, uuid.toString());
 				preparedStatement.setString(2, player.getDisplayName());
 				preparedStatement.setString(3, link_key.toString());
 				preparedStatement.execute();
-				preparedStatement2 = connection.prepareStatement("INSERT INTO players(uuid,online) VALUES (?,?)");
+				preparedStatement2 = dbConnection.getConnection().prepareStatement("INSERT INTO players(uuid,online) VALUES (?,?)");
 				preparedStatement2.setString(1, uuid.toString());
 				preparedStatement2.setBoolean(2, true);
 				preparedStatement2.execute();
@@ -88,13 +99,13 @@ public class DatabaseManager {
 		}
 	}
 
-	public void createPlayerCash(Connection connection, Player player)
+	public void createPlayerCash(Player player)
 	{
 		final String lang = main.filesManager.getLanguage();
 		final PreparedStatement preparedStatement;
 		try
 		{
-			preparedStatement = connection.prepareStatement("SELECT * FROM players WHERE uuid = ?");
+			preparedStatement = dbConnection.getConnection().prepareStatement("SELECT * FROM players WHERE uuid = ?");
 			preparedStatement.setString(1, player.getUniqueId().toString());
 			final ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next())
@@ -125,7 +136,7 @@ public class DatabaseManager {
 		}
 	}
 
-	public void updatesPlayers(Connection connection, Player player)
+	public void updatesPlayers(Player player)
 	{
 		final String lang = main.filesManager.getLanguage();
 		final String key = "Players." + player.getUniqueId().toString();
@@ -143,7 +154,7 @@ public class DatabaseManager {
 			final PreparedStatement preparedStatement;
 			try
 			{
-				preparedStatement = connection.prepareStatement("UPDATE players SET xp = ?, level = ?, money = ?, status = ?, playtime = ?, lang = ?, titleType = ? WHERE uuid = ?");
+				preparedStatement = dbConnection.getConnection().prepareStatement("UPDATE players SET xp = ?, level = ?, money = ?, status = ?, playtime = ?, lang = ?, titleType = ? WHERE uuid = ?");
 				preparedStatement.setInt(1, xp);
 				preparedStatement.setInt(2, level);
 				preparedStatement.setInt(3, money);
@@ -161,12 +172,12 @@ public class DatabaseManager {
 		}
 	}
 
-	public void setOnline(Connection connection, String uuid)
+	public void setOnline(String uuid)
 	{
 		final PreparedStatement preparedStatement;
 		try
 		{
-			preparedStatement = connection.prepareStatement("UPDATE online_status SET online = ? WHERE uuid = ?");
+			preparedStatement = dbConnection.getConnection().prepareStatement("UPDATE online_status SET online = ? WHERE uuid = ?");
 			preparedStatement.setBoolean(1, true);
 			preparedStatement.setString(2, uuid);
 			preparedStatement.execute();
@@ -176,12 +187,12 @@ public class DatabaseManager {
 		}
 	}
 
-	public void setOffline(Connection connection, String uuid)
+	public void setOffline(String uuid)
 	{
 		final PreparedStatement preparedStatement;
 		try
 		{
-			preparedStatement = connection.prepareStatement("UPDATE online_status SET online = ? WHERE uuid = ?");
+			preparedStatement = dbConnection.getConnection().prepareStatement("UPDATE online_status SET online = ? WHERE uuid = ?");
 			preparedStatement.setBoolean(1, false);
 			preparedStatement.setString(2, uuid);
 			preparedStatement.execute();
@@ -191,12 +202,12 @@ public class DatabaseManager {
 		}
 	}
 
-	public void updateStats(Connection connection)
+	public void updateStats()
 	{
 		final PreparedStatement preparedStatement;
 		try
 		{
-			preparedStatement = connection.prepareStatement("SELECT * FROM stats");
+			preparedStatement = dbConnection.getConnection().prepareStatement("SELECT * FROM stats");
 			final ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next())
 			{
