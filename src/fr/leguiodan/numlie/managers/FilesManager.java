@@ -158,6 +158,7 @@ public class FilesManager {
 		playersYaml.set("Players." + uuid + ".link_key", link_key);
 		saveFile(playersYaml, false);
 	}
+
 	public String getLink_Key(Player player)
 	{
 		final String uuid = player.getUniqueId().toString();
