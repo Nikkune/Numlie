@@ -1,25 +1,42 @@
 package fr.leguiodan.numlie.utilities;
 
+import fr.leguiodan.numlie.Main;
 import fr.leguiodan.numlie.utilities.enumerations.ColorsCodes;
+import fr.leguiodan.numlie.utilities.enumerations.LoggerType;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Logger {
-	public static void logNormal(String message)
-	{
-		System.out.println(ColorsCodes.ANSI_PURPLE.getColorCode() + "[Numlie] " + ColorsCodes.ANSI_WHITE.getColorCode() + message + ColorsCodes.ANSI_RESET.getColorCode());
-	}
+    static Date cal = new GregorianCalendar().getTime();
+    static String time = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(cal);
+    static File loggerFile = new File(Main.INSTANCE.getDataFolder(), "/logger.txt");
+    static FileWriter loggerWriter;
 
-	public static void logWarning(String message)
-	{
-		System.out.println(ColorsCodes.ANSI_PURPLE.getColorCode() + "[Numlie] " + ColorsCodes.ANSI_YELLOW.getColorCode() + message + ColorsCodes.ANSI_RESET.getColorCode());
-	}
+    Logger() {
+        try {
+            if (loggerFile.createNewFile()) {
+                System.out.println("File created: " + loggerFile.getName());
+                loggerWriter = new FileWriter(loggerFile.getName());
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
 
-	public static void logError(String message)
-	{
-		System.out.println(ColorsCodes.ANSI_PURPLE.getColorCode() + "[Numlie] " + ColorsCodes.ANSI_RED.getColorCode() + message + ColorsCodes.ANSI_RESET.getColorCode());
-	}
-
-	public static void logSuccess(String message)
-	{
-		System.out.println(ColorsCodes.ANSI_PURPLE.getColorCode() + "[Numlie] " + ColorsCodes.ANSI_GREEN.getColorCode() + message + ColorsCodes.ANSI_RESET.getColorCode());
-	}
+    public static void log(LoggerType type, String message) {
+        System.out.println(ColorsCodes.ANSI_PURPLE.getColorCode() + "[Numlie] " + type.getColors() + message + ColorsCodes.ANSI_RESET.getColorCode());
+        try {
+            loggerWriter.write(time + message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
