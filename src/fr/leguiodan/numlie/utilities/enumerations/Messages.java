@@ -24,6 +24,9 @@ public enum Messages {
     UI_Title("UITitle"),
     UI_Chat("UIChat"),
     UI_Get_Link_Key("UIGetLinkKey"),
+    Chat_Selector("ChatSelector"),
+    Party_No("PartyNo"),
+    Party_Yes("PartyYes")
     ;
     final String key;
 

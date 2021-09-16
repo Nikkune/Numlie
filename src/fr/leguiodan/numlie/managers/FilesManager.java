@@ -2,7 +2,6 @@ package fr.leguiodan.numlie.managers;
 
 import fr.leguiodan.numlie.Main;
 import fr.leguiodan.numlie.utilities.Logger;
-import fr.leguiodan.numlie.utilities.enumerations.Files;
 import fr.leguiodan.numlie.utilities.enumerations.LoggerType;
 import fr.leguiodan.numlie.utilities.enumerations.Messages;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -10,77 +9,83 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
 public class FilesManager {
 
     private final Main main;
-    private final ArrayList<Files> filesList = new ArrayList<>();
-    private final Map<Files, YamlConfiguration> yamlList = new HashMap<>();
+
+    private final File playersFile;
+    private final File statsFile;
+    private final File configFile;
+    private final File messageFile;
+
+    private final YamlConfiguration playersYaml;
+    private final YamlConfiguration statsYaml;
+    private final YamlConfiguration configYaml;
+    private final YamlConfiguration messageYaml;
 
     public FilesManager(Main main) {
         this.main = main;
+        this.configFile = new File(this.main.getDataFolder(), "/config.yml");
+        this.playersFile = new File(this.main.getDataFolder(), "/players.yml");
+        this.statsFile = new File(this.main.getDataFolder(), "/stats.yml");
+        this.messageFile = new File(this.main.getDataFolder(), "/messages.yml");
+
+        this.configYaml = YamlConfiguration.loadConfiguration(configFile);
+        this.playersYaml = YamlConfiguration.loadConfiguration(playersFile);
+        this.statsYaml = YamlConfiguration.loadConfiguration(statsFile);
+        this.messageYaml = YamlConfiguration.loadConfiguration(messageFile);
     }
 
     public void init() {
-        filesList.add(Files.PLAYERS);
-        filesList.add(Files.STATS);
-        filesList.add(Files.CONFIG);
-        filesList.add(Files.MESSAGES);
-
-        for (Files file : filesList) {
-            yamlList.put(file, loadYaml(file));
-        }
-        if (!createFile(Files.CONFIG)) {
-            YamlConfiguration configYaml = loadYaml(Files.CONFIG);
-            configYaml.set("Main.Reload", false);
-            configYaml.set("Main.Language", "EN");
-            saveYaml(Files.CONFIG, true);
-        }
         messageUpdate();
+        if (!configFile.exists()) {
+            configYaml.set("Main.Reload", true);
+            configYaml.set("Main.Language", "EN");
+            saveYaml(configYaml, true);
+            saveYaml(playersYaml, true);
+            saveYaml(messageYaml, true);
+        }
         Logger.log(LoggerType.SUCCESS, "Files OK !");
     }
 
     public void setLink_Key(Player player, String link_key) {
         final String uuid = player.getUniqueId().toString();
-        loadYaml(Files.PLAYERS).set("Players." + uuid + ".link_key", link_key);
-        saveYaml(Files.PLAYERS, false);
+        playersYaml.set("Players." + uuid + ".link_key", link_key);
+        saveYaml(playersYaml, false);
     }
 
     public String getLink_Key(Player player) {
         final String uuid = player.getUniqueId().toString();
-        return loadYaml(Files.PLAYERS).getString("Players." + uuid + ".link_key");
+        return playersYaml.getString("Players." + uuid + ".link_key");
     }
 
     public void setPlayerLang(Player player, String lang) {
         final String uuid = player.getUniqueId().toString();
-        loadYaml(Files.PLAYERS).set("Players." + uuid + ".lang", lang);
-        saveYaml(Files.PLAYERS, false);
+        playersYaml.set("Players." + uuid + ".lang", lang);
+        saveYaml(playersYaml, false);
     }
 
     public String getPlayerLang(Player player) {
         final String uuid = player.getUniqueId().toString();
-        return loadYaml(Files.PLAYERS).getString("Players." + uuid + ".lang");
+        return playersYaml.getString("Players." + uuid + ".lang");
     }
 
     public void setPlayerTitle(Player player, int title_type) {
         final String uuid = player.getUniqueId().toString();
-        loadYaml(Files.PLAYERS).set("Players." + uuid + ".title", title_type);
-        saveYaml(Files.PLAYERS, true);
+        playersYaml.set("Players." + uuid + ".title", title_type);
+        saveYaml(playersYaml, true);
     }
 
     public int getPlayerTitle(Player player) {
         final String uuid = player.getUniqueId().toString();
-        return loadYaml(Files.PLAYERS).getInt("Players." + uuid + ".title");
+        return playersYaml.getInt("Players." + uuid + ".title");
     }
 
     public int[] getPlayersStats(Player player) {
         final String uuid = player.getUniqueId().toString();
         int[] playerStats = new int[5];
-        YamlConfiguration playersYaml = loadYaml(Files.PLAYERS);
         playerStats[0] = playersYaml.getInt("Players." + uuid + ".xp");
         playerStats[1] = playersYaml.getInt("Players." + uuid + ".level");
         playerStats[2] = playersYaml.getInt("Players." + uuid + ".money");
@@ -91,42 +96,39 @@ public class FilesManager {
 
     public void setPlayersStats(Player player, int[] playerStats) {
         final String uuid = player.getUniqueId().toString();
-        YamlConfiguration playersYaml = loadYaml(Files.PLAYERS);
         playersYaml.set("Players." + uuid + ".xp", playerStats[0]);
         playersYaml.set("Players." + uuid + ".level", playerStats[1]);
         playersYaml.set("Players." + uuid + ".money", playerStats[2]);
         playersYaml.set("Players." + uuid + ".status", playerStats[3]);
         playersYaml.set("Players." + uuid + ".playtime", playerStats[4]);
-        saveYaml(Files.PLAYERS, false);
+        saveYaml(playersYaml, false);
     }
 
     public void statsUpdate(int level, int max_pv, int xp_need, int xp_win) {
         final String key = "Stats.Level " + level;
-        YamlConfiguration statsYaml = loadYaml(Files.STATS);
         statsYaml.set(key + ".max_pv", max_pv);
         statsYaml.set(key + ".xp_need", xp_need);
         statsYaml.set(key + ".xp_win", xp_win);
-        saveYaml(Files.STATS, false);
+        saveYaml(statsYaml, false);
         Logger.log(LoggerType.SUCCESS, getMessage(Messages.Level_Saved, getLanguage()) + level + " !");
     }
 
     public int getXpNeed(int level) {
         final String key = "Stats.Level " + level;
-        return loadYaml(Files.STATS).getInt(key + ".xp_need");
+        return statsYaml.getInt(key + ".xp_need");
     }
 
     public int getXpWin(int level) {
         final String key = "Stats.Level " + level;
-        return loadYaml(Files.STATS).getInt(key + ".xp_win");
+        return statsYaml.getInt(key + ".xp_win");
     }
 
     public int getMaxPv(int level) {
         final String key = "Stats.Level " + level;
-        return loadYaml(Files.STATS).getInt(key + ".max_pv");
+        return statsYaml.getInt(key + ".max_pv");
     }
 
     public void messageUpdate() {
-        YamlConfiguration messageYaml = loadYaml(Files.MESSAGES);
         final String key = "Messages.";
         final String lang_en = ".EN";
         final String lang_fr = ".FR";
@@ -200,64 +202,85 @@ public class FilesManager {
         messageYaml.set(key + "UITitle" + lang_en, "Title");
         messageYaml.set(key + "UITitle" + lang_fr, "Titre");
 
-        saveYaml(Files.MESSAGES, true);
+        messageYaml.set(key + "ChatSelector" + lang_en, "You must put a selector (!g,!f,!p) to send a message in the chat ex:!gHello everyone !");
+        messageYaml.set(key + "ChatSelector" + lang_fr, "Vous devez mettre un sélecteur (!g,!f,!p) pour envoyer un message dans le chat ex :!gBonjour à tous !");
+
+        messageYaml.set(key + "PartyNo" + lang_en, "You must be at a party!");
+        messageYaml.set(key + "PartyNo" + lang_fr, "Vous devez être dans une party !");
+
+        saveYaml(messageYaml, false);
+        Logger.log(LoggerType.SUCCESS, "Messages successful updated");
     }
 
     public String getMessage(Messages message, String lang) {
-        return loadYaml(Files.MESSAGES).getString("Messages." + message.getKey() + "." + lang);
+        return messageYaml.getString("Messages." + message.getKey() + "." + lang);
     }
 
     public String getLanguage() {
-        return loadYaml(Files.CONFIG).getString("Main.Language");
+        return configYaml.getString("Main.Language");
     }
 
-    public boolean createFile(Files file) {
-        String fileName = file.getFileName();
-        File newFile = new File(this.main.getDataFolder(), "/" + fileName + ".yml");
-        if (!newFile.exists()) {
-            if (newFile.mkdir()) {
-                Logger.log(LoggerType.SUCCESS, fileName + ".yml" + ", Successful created !");
-                return true;
-            } else {
-                Logger.log(LoggerType.ERROR, fileName + ".yml" + ", Can't be created !");
-                return false;
+    public void saveYaml(YamlConfiguration ymlConfig, boolean log) {
+        if (playersYaml.equals(ymlConfig)) {
+            try {
+                playersYaml.save(playersFile);
+                if (log) {
+                    String message = getMessage(Messages.Backup_Success, getLanguage()) + "players_yml";
+                    Logger.log(LoggerType.SUCCESS, message);
+                }
+            } catch (IOException e) {
+                String message = getMessage(Messages.Backup_Error, getLanguage()) + "players_yml";
+                Logger.log(LoggerType.ERROR, message);
+                e.printStackTrace();
             }
-        } else {
-            return true;
-        }
-    }
-
-    public void deleteFile(Files file) {
-        String fileName = file.getFileName();
-        File newFile = new File(this.main.getDataFolder(), "/" + fileName + ".yml");
-        if (newFile.delete()) {
-            Logger.log(LoggerType.SUCCESS, getMessage(Messages.Delete_Success, getLanguage()) + fileName);
-        } else {
-            Logger.log(LoggerType.ERROR, getMessage(Messages.Delete_Error, getLanguage()) + fileName);
-        }
-    }
-
-    public YamlConfiguration loadYaml(Files file) {
-        String fileName = file.getFileName();
-        File ymlFile = new File(this.main.getDataFolder(), "/" + fileName + ".yml");
-        if (ymlFile.exists()) {
-            return YamlConfiguration.loadConfiguration(ymlFile);
-        }
-        return null;
-    }
-
-    public void saveYaml(Files file, boolean log) {
-        String fileName = file.getFileName();
-        File ymlFile = new File(this.main.getDataFolder(), "/" + fileName + ".yml");
-        YamlConfiguration ymlConf = YamlConfiguration.loadConfiguration(ymlFile);
-        try {
-            ymlConf.save(ymlFile);
-            if (log) {
-                Logger.log(LoggerType.SUCCESS, getMessage(Messages.Backup_Success, getLanguage()) + fileName + ".yml");
+        } else if (statsYaml.equals(ymlConfig)) {
+            try {
+                statsYaml.save(statsFile);
+                if (log) {
+                    String message = getMessage(Messages.Backup_Success, getLanguage()) + "stats_yml";
+                    Logger.log(LoggerType.SUCCESS, message);
+                }
+            } catch (IOException e) {
+                String message = getMessage(Messages.Backup_Error, getLanguage()) + "stats_yml";
+                Logger.log(LoggerType.ERROR, message);
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            Logger.log(LoggerType.ERROR, getMessage(Messages.Backup_Error, getLanguage()) + fileName + ".yml");
-            e.printStackTrace();
+        } else if (configYaml.equals(ymlConfig)) {
+            try {
+                configYaml.save(configFile);
+                if (log) {
+                    String message = getMessage(Messages.Backup_Success, getLanguage()) + "config_yml";
+                    Logger.log(LoggerType.SUCCESS, message);
+                }
+            } catch (IOException e) {
+                String message = getMessage(Messages.Backup_Error, getLanguage()) + "config_yml";
+                Logger.log(LoggerType.ERROR, message);
+                e.printStackTrace();
+            }
+        } else if (messageYaml.equals(ymlConfig)) {
+            try {
+                messageYaml.save(messageFile);
+                if (log) {
+                    String message = getMessage(Messages.Backup_Success, getLanguage()) + "messages_yml";
+                    Logger.log(LoggerType.SUCCESS, message);
+                }
+            } catch (IOException e) {
+                String message = getMessage(Messages.Backup_Error, getLanguage()) + "messages_yml";
+                Logger.log(LoggerType.ERROR, message);
+                e.printStackTrace();
+            }
         }
+    }
+
+    public YamlConfiguration getPlayersYaml() {
+        return playersYaml;
+    }
+
+    public YamlConfiguration getStatsYaml() {
+        return statsYaml;
+    }
+
+    public YamlConfiguration getConfigYaml() {
+        return configYaml;
     }
 }

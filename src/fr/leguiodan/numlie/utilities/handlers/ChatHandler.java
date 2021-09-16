@@ -3,7 +3,6 @@ package fr.leguiodan.numlie.utilities.handlers;
 import com.sun.istack.internal.NotNull;
 import fr.leguiodan.numlie.Main;
 import fr.leguiodan.numlie.utilities.enumerations.Chat_Type;
-import fr.leguiodan.numlie.utilities.enumerations.Files;
 import fr.leguiodan.numlie.utilities.enumerations.Status;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,7 +12,7 @@ public class ChatHandler {
 
     public static String setJoinMessage(@NotNull Main main, @NotNull Player player) {
         final String uuid = player.getUniqueId().toString();
-        final YamlConfiguration playersYaml = main.filesManager.loadYaml(Files.PLAYERS);
+        final YamlConfiguration playersYaml = main.filesManager.getPlayersYaml();
         final int status_id = playersYaml.getInt("Players." + uuid + ".status");
         final Status status = Status.idToStatus(status_id);
         return ChatColor.DARK_GRAY + "[+] " + status.getChatColor() + player.getDisplayName() + ChatColor.RESET;
@@ -21,7 +20,7 @@ public class ChatHandler {
 
     public static String setLeaveMessage(@NotNull Main main, @NotNull Player player) {
         final String uuid = player.getUniqueId().toString();
-        final YamlConfiguration playersYaml = main.filesManager.loadYaml(Files.PLAYERS);
+        final YamlConfiguration playersYaml = main.filesManager.getPlayersYaml();
         final int status_id = playersYaml.getInt("Players." + uuid + ".status");
         final Status status = Status.idToStatus(status_id);
         return ChatColor.DARK_GRAY + "[-] " + status.getChatColor() + player.getDisplayName() + ChatColor.RESET;
@@ -29,7 +28,7 @@ public class ChatHandler {
 
     public static String setChatMessage(@NotNull Chat_Type chat_type, @NotNull Main main, String message, @NotNull Player sender) {
         final String uuid = sender.getUniqueId().toString();
-        final YamlConfiguration playersYaml = main.filesManager.loadYaml(Files.PLAYERS);
+        final YamlConfiguration playersYaml = main.filesManager.getPlayersYaml();
         final int status_id = playersYaml.getInt("Players." + uuid + ".status");
         final Status status = Status.idToStatus(status_id);
         return status.getChatColor() + sender.getDisplayName() + ChatColor.DARK_GRAY + " >> " + chat_type.getColor() + message.substring(2);

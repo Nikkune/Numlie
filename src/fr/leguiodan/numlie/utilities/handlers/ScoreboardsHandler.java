@@ -1,7 +1,6 @@
 package fr.leguiodan.numlie.utilities.handlers;
 
 import fr.leguiodan.numlie.Main;
-import fr.leguiodan.numlie.utilities.enumerations.Files;
 import fr.leguiodan.numlie.utilities.enumerations.Messages;
 import fr.leguiodan.numlie.utilities.enumerations.Status;
 import org.bukkit.Bukkit;
@@ -10,12 +9,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
-@SuppressWarnings("DuplicatedCode")
 public class ScoreboardsHandler {
     public static void createScoreboard(Player player, Main main) {
         final String uuid = player.getUniqueId().toString();
         final String player_lang = main.filesManager.getPlayerLang(player);
-        final YamlConfiguration playersYaml = main.filesManager.loadYaml(Files.PLAYERS);
+        final YamlConfiguration playersYaml = main.filesManager.getPlayersYaml();
 
         final int xp = playersYaml.getInt("Players." + uuid + ".xp");
         final int level = playersYaml.getInt("Players." + uuid + ".level");
@@ -49,7 +47,7 @@ public class ScoreboardsHandler {
     public static void updateScoreboard(Player player, Main main) {
         final String uuid = player.getUniqueId().toString();
         final String player_lang = main.filesManager.getPlayerLang(player);
-        final YamlConfiguration playersYaml = main.filesManager.loadYaml(Files.PLAYERS);
+        final YamlConfiguration playersYaml = main.filesManager.getPlayersYaml();
 
         final int xp = playersYaml.getInt("Players." + uuid + ".xp");
         final int level = playersYaml.getInt("Players." + uuid + ".level");
