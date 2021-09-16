@@ -25,10 +25,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EventsManager implements Listener {
 
@@ -150,17 +147,19 @@ public class EventsManager implements Listener {
                         event.setFormat(ChatHandler.setMessageViaType(chat_type) + ChatHandler.setChatMessage(chat_type, main, message, sender));
                         break;
                     case FRIENDS:
-                        List<Player> friendsList = main.databaseManager.getPlayerFriends(sender);
-                        if (friendsList != null) {
-                            if (!friendsList.isEmpty()) {
-                                for (Player friend : friendsList) {
+                        List<String> friends = main.databaseManager.getPlayerFriends(sender);
+                        List<Player> onlineFriends = new ArrayList<>();
+                        if (friends != null) {
+                            for (String friend : friends) {
+                                onlineFriends.add(Bukkit.getPlayerExact(friend));
+                            }
+                            if (!onlineFriends.isEmpty()) {
+                                for (Player friend : onlineFriends) {
                                     friend.sendMessage(ChatHandler.setFriendMessage() + ChatHandler.setChatMessage(chat_type, main, message, sender));
                                 }
                             } else {
                                 event.setCancelled(true);
                             }
-                        }else{
-                            event.setCancelled(true);
                         }
                         break;
                     default:
@@ -173,7 +172,6 @@ public class EventsManager implements Listener {
             }
         } else {
             event.setCancelled(true);
-            sender.sendMessage(ChatHandler.setErrorMessage() + main.filesManager.getMessage(Messages.Chat_Selector, playerLang));
         }
     }
 

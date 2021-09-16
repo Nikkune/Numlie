@@ -5,8 +5,12 @@ import fr.leguiodan.numlie.utilities.enumerations.Messages;
 import fr.leguiodan.numlie.utilities.enumerations.Status;
 import fr.leguiodan.numlie.utilities.handlers.ChatHandler;
 import fr.leguiodan.numlie.utilities.handlers.ScoreboardsHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayersManager {
     private final Main main;
@@ -116,5 +120,38 @@ public class PlayersManager {
         }
         ScoreboardsHandler.createScoreboard(player, main);
         updatePlayer(player);
+    }
+
+    public List<Player> getOnlineFriends(List<String> friendsList) {
+        List<Player> onlineFriends = new ArrayList<>();
+        for (String friend : friendsList) {
+            onlineFriends.add(Bukkit.getPlayerExact(friend));
+        }
+        return onlineFriends;
+    }
+
+    public List<String> getOfflineFriends(List<String> friendsList) {
+        List<String> offlineFriends = new ArrayList<>();
+        for (String friend : friendsList) {
+            if (!main.databaseManager.isOnline(friend)) {
+                offlineFriends.add(main.databaseManager.getPlayerPseudo(friend));
+            }
+        }
+        return offlineFriends;
+    }
+
+    public String showFriendsList(Player sender) {
+        List<String> friendsList = main.databaseManager.getPlayerFriends(sender);
+        List<Player> onlineFriends = getOnlineFriends(friendsList);
+        List<String> offlineFriends = getOfflineFriends(friendsList);
+        StringBuilder friendsString = new StringBuilder();
+        friendsString.append(ChatHandler.setFriendMessage());
+        for (Player onlineFriend : onlineFriends){
+            friendsString.append(ChatColor.GREEN).append(onlineFriend.getDisplayName()).append(" ");
+        }
+        for (String offlineFriend : offlineFriends){
+            friendsString.append(ChatColor.RED).append(offlineFriend).append(" ");
+        }
+        return friendsString.toString();
     }
 }
