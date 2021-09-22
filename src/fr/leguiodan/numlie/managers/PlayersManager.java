@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.UUID;
 
 public class PlayersManager {
     private final Main main;
@@ -66,7 +67,7 @@ public class PlayersManager {
     public void entityKilled(Player player, int entity_level) {
         final int xp_win = main.filesManager.getXpWin(entity_level);
         if (main.databaseManager.isInParty(player)) {
-            Player host = Bukkit.getPlayer(main.databaseManager.getHostUUID(player));
+            Player host = Bukkit.getPlayer(UUID.fromString(main.databaseManager.getHostUUID(player)));
             List<Player> players = main.databaseManager.getAllPlayerOfParty(host);
             for (Player player1 : players) {
                 playerKill(player1, xp_win);

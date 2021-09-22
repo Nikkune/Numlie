@@ -25,10 +25,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EventsManager implements Listener {
 
@@ -125,7 +122,7 @@ public class EventsManager implements Listener {
                                     player.sendMessage(ChatHandler.setPartyMessage() + ChatHandler.setChatMessage(chat_type, main, message, sender));
                                 }
                             } else {
-                                Player host = Bukkit.getPlayer(main.databaseManager.getHostUUID(sender));
+                                Player host = Bukkit.getPlayer(UUID.fromString(main.databaseManager.getHostUUID(sender)));
                                 List<Player> playersList = main.databaseManager.getAllPlayerOfParty(host);
                                 for (Player player : playersList) {
                                     player.sendMessage(ChatHandler.setPartyMessage() + ChatHandler.setChatMessage(chat_type, main, message, sender));

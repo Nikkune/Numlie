@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.UUID;
 
 public class PartyManager {
     private final Main main;
@@ -51,13 +52,17 @@ public class PartyManager {
             membersString.append(ChatHandler.setPartyMessage());
             if (main.databaseManager.isTheHost(sender)) {
                 List<Player> playerList = main.databaseManager.getAllPlayerOfParty(sender);
-                for (Player player : playerList) {
-                    membersString.append(player.getDisplayName()).append(" ");
+                if (!playerList.isEmpty()) {
+                    for (Player player : playerList) {
+                        membersString.append(player.getDisplayName()).append(" ");
+                    }
                 }
             } else {
-                List<Player> playerList = main.databaseManager.getAllPlayerOfParty(Bukkit.getPlayerExact(main.databaseManager.getHostUUID(sender)));
-                for (Player player : playerList) {
-                    membersString.append(player.getDisplayName()).append(" ");
+                List<Player> playerList = main.databaseManager.getAllPlayerOfParty(Bukkit.getPlayer(UUID.fromString(main.databaseManager.getHostUUID(sender))));
+                if (!playerList.isEmpty()) {
+                    for (Player player : playerList) {
+                        membersString.append(player.getDisplayName()).append(" ");
+                    }
                 }
             }
             return membersString.toString();
