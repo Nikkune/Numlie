@@ -26,9 +26,10 @@ public class PartyManager {
             if (main.databaseManager.isTheHost(host)) {
                 if (invited != null) {
                     main.databaseManager.inviteParty(host, invited);
-                    invited.sendMessage(ChatHandler.setErrorMessage() + host.getDisplayName() + " vous a invité dans sa party !");
+                    invited.sendMessage(ChatHandler.setWarningMessage() + host.getDisplayName() + main.filesManager.getMessage(Messages.Party_Invited, main.filesManager.getPlayerLang(invited)));
+                    host.sendMessage(ChatHandler.setSuccessMessage() + main.filesManager.getMessage(Messages.Party_Invite, playerLang) + invited.getDisplayName());
                 } else {
-                    host.sendMessage(ChatHandler.setErrorMessage() + "Le Joueur n'est pas en ligne !");
+                    host.sendMessage(ChatHandler.setErrorMessage() + main.filesManager.getMessage(Messages.Player_Offline, playerLang));
                 }
             }
         } else {
@@ -54,7 +55,7 @@ public class PartyManager {
                     membersString.append(player.getDisplayName()).append(" ");
                 }
             } else {
-                List<Player> playerList = main.databaseManager.getAllPlayerOfParty(Bukkit.getPlayerExact(main.databaseManager.getHost(sender)));
+                List<Player> playerList = main.databaseManager.getAllPlayerOfParty(Bukkit.getPlayerExact(main.databaseManager.getHostUUID(sender)));
                 for (Player player : playerList) {
                     membersString.append(player.getDisplayName()).append(" ");
                 }

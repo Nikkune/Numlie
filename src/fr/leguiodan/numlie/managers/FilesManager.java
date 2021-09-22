@@ -146,84 +146,53 @@ public class FilesManager {
         return statsYaml.getInt(key + ".max_pv");
     }
 
-    public void messageUpdate() {
-        final String key = "Messages.";
-        final String lang_en = ".EN";
-        final String lang_fr = ".FR";
-
-        messageYaml.set(key + "databaseOk" + lang_en, "Successful connection to the database !");
-        messageYaml.set(key + "databaseOk" + lang_fr, "Connexion réussie à la base de données !");
-
-        messageYaml.set(key + "accountCreate" + lang_en, "Account created for the player : ");
-        messageYaml.set(key + "accountCreate" + lang_fr, "Compte créé pour le joueur : ");
-
-        messageYaml.set(key + "cashCreate" + lang_en, "Cash created for the player : ");
-        messageYaml.set(key + "cashCreate" + lang_fr, "Cash créé pour le joueur : ");
-
-        messageYaml.set(key + "accountUpdate" + lang_en, "Account updated for the player : ");
-        messageYaml.set(key + "accountUpdate" + lang_fr, "Compte mis à jour pour le joueur : ");
-
-        messageYaml.set(key + "statsYamlOk" + lang_en, "The Stats.yml file has saved the level : ");
-        messageYaml.set(key + "statsYamlOk" + lang_fr, "Le fichier Stats.yml a enregistré le niveau : ");
-
-        messageYaml.set(key + "congratulations" + lang_en, "Congratulations !");
-        messageYaml.set(key + "congratulations" + lang_fr, "Félicitations !");
-
-        messageYaml.set(key + "shame" + lang_en, "Oh no !");
-        messageYaml.set(key + "shame" + lang_fr, "Oh non !");
-
-        messageYaml.set(key + "levelPlus" + lang_en, "You have gained a level! You are now at the level : ");
-        messageYaml.set(key + "levelPlus" + lang_fr, "Vous avez gagné un niveau ! Vous êtes maintenant au niveau : ");
-
-        messageYaml.set(key + "statusPlus" + lang_en, "You have a new status! You are now a : ");
-        messageYaml.set(key + "statusPlus" + lang_fr, "Vous avez un nouveau statut ! Vous êtes maintenant un : ");
-
-        messageYaml.set(key + "xpPlus" + lang_en, "You have gained : ");
-        messageYaml.set(key + "xpPlus" + lang_fr, "Vous avez gagné : ");
-
-        messageYaml.set(key + "xpMinus" + lang_en, "You lost 25% of your xp !");
-        messageYaml.set(key + "xpMinus" + lang_fr, "Vous avez perdu 25% de votre xp !");
-
-        messageYaml.set(key + "backupErr" + lang_en, "Backup error on the file : ");
-        messageYaml.set(key + "backupErr" + lang_fr, "Erreur de sauvegarde sur le fichier : ");
-
-        messageYaml.set(key + "backupOk" + lang_en, "Successful backup for file : ");
-        messageYaml.set(key + "backupOk" + lang_fr, "Sauvegarde réussie pour le fichier : ");
-
-        messageYaml.set(key + "deleteErr" + lang_en, "Delete error for the file : ");
-        messageYaml.set(key + "deleteErr" + lang_fr, "Erreur de suppression pour le fichier : ");
-
-        messageYaml.set(key + "deleteOk" + lang_en, "Successful deletion for the file : ");
-        messageYaml.set(key + "deleteOk" + lang_fr, "Suppression réussie du fichier : ");
-
-        messageYaml.set(key + "UILevel" + lang_en, "Level");
-        messageYaml.set(key + "UILevel" + lang_fr, "Niveau");
-
-        messageYaml.set(key + "UIPlaytime" + lang_en, "Playtime");
-        messageYaml.set(key + "UIPlaytime" + lang_fr, "Temps De Jeu");
-
-        messageYaml.set(key + "UIChangeLang" + lang_en, "Change language to : ");
-        messageYaml.set(key + "UIChangeLang" + lang_fr, "Changer la langue pour : ");
-
-        messageYaml.set(key + "UIChangeTitle" + lang_en, "Change announce in : ");
-        messageYaml.set(key + "UIChangeTitle" + lang_fr, "Modifier l'annonce en : ");
-
-        messageYaml.set(key + "UIGetLinkKey" + lang_en, "Get the link_key !");
-        messageYaml.set(key + "UIGetLinkKey" + lang_fr, "Récupérer la link_key !");
-
-        messageYaml.set(key + "UIChat" + lang_en, "Chat message");
-        messageYaml.set(key + "UIChat" + lang_fr, "Message du chat");
-
-        messageYaml.set(key + "UITitle" + lang_en, "Title");
-        messageYaml.set(key + "UITitle" + lang_fr, "Titre");
-
-        messageYaml.set(key + "ChatSelector" + lang_en, "You must put a selector (!g,!f,!p) to send a message in the chat ex:!gHello everyone !");
-        messageYaml.set(key + "ChatSelector" + lang_fr, "Vous devez mettre un sélecteur (!g,!f,!p) pour envoyer un message dans le chat ex :!gBonjour à tous !");
-
-        messageYaml.set(key + "PartyNo" + lang_en, "You must be at a party!");
-        messageYaml.set(key + "PartyNo" + lang_fr, "Vous devez être dans une party !");
-
+    private void setMessage(Messages messages, String trad_en, String trad_fr) {
+        messageYaml.set("Messages." + messages.getKey() + ".EN", trad_en);
+        messageYaml.set("Messages." + messages.getKey() + ".FR", trad_fr);
         saveYaml(messageYaml, false);
+    }
+
+    public void messageUpdate() {
+        setMessage(Messages.Database_Connected, "Successful connection to the database !", "Connexion réussie à la base de données !");
+        setMessage(Messages.Database_Disconnected, "Disconnected from the database !", "Deconnecté de la base de données");
+        setMessage(Messages.Account_Created, "Account created for the player : ", "Compte créé pour le joueur : ");
+        setMessage(Messages.Cash_Created, "Cash created for the player : ", "Cash créé pour le joueur : ");
+        setMessage(Messages.Account_Updated, "Account updated for the player : ", "Compte mis à jour pour le joueur : ");
+        setMessage(Messages.Level_Saved, "The Stats.yml file has saved the level : ", "Le fichier Stats.yml a enregistré le niveau : ");
+        setMessage(Messages.Congratulations, "Congratulations !", "Félicitations !");
+        setMessage(Messages.Shame, "Oh no !", "Oh non !");
+        setMessage(Messages.Level_Up, "You have gained a level! You are now at the level : ", "Vous avez gagné un niveau ! Vous êtes maintenant au niveau : ");
+        setMessage(Messages.Status_Up, "You have a new status! You are now a : ", "Vous avez un nouveau statut ! Vous êtes maintenant un : ");
+        setMessage(Messages.Xp_Up, "You have gained : ", "Vous avez gagné : ");
+        setMessage(Messages.Xp_Down, "You lost 25% of your xp !", "Vous avez perdu 25% de votre xp !");
+        setMessage(Messages.Backup_Error, "Backup error on the file : ", "Erreur de sauvegarde sur le fichier : ");
+        setMessage(Messages.Backup_Success, "Successful backup for file : ", "Sauvegarde réussie pour le fichier : ");
+        setMessage(Messages.UI_Level, "Level", "Niveau");
+        setMessage(Messages.UI_Playtime, "Playtime", "Temps De Jeu");
+        setMessage(Messages.UI_Change_Lang, "Change language to : ", "Changer la langue pour : ");
+        setMessage(Messages.UI_Change_Title, "Change announce in : ", "Modifier l'annonce en : ");
+        setMessage(Messages.UI_Get_Link_Key, "Get the link_key !", "Récupérer la link_key !");
+        setMessage(Messages.UI_Chat, "Message in chat", "Message dans le chat");
+        setMessage(Messages.UI_Title, "Title", "Titre");
+        setMessage(Messages.Chat_Selector, "You must put a selector (!g,!p) to send a message in the chat ex:!gHello everyone !", "Vous devez mettre un sélecteur (!g,!p) pour envoyer un message dans le chat ex :!gBonjour à tous !");
+        setMessage(Messages.Party_No, "You must be at a party !", "Vous devez être dans une party !");
+        setMessage(Messages.Party_Created, "The party has been created !", "La party a bien été créé !");
+        setMessage(Messages.Party_Dissolved, "The leader of the group dissolved the party!", "Le chef du groupe à dissolu la party !");
+        setMessage(Messages.Party_Joined, "You joined the party !", "Vous avez rejoint la party !");
+        setMessage(Messages.Party_Joined_1, " a rejoint la party !", " joined the party !");
+        setMessage(Messages.Party_Invite, "You have invited :", "Vous avez bien invité : ");
+        setMessage(Messages.Party_Invited, " invited you to his party!", " vous a invité dans sa party !");
+        setMessage(Messages.Party_Leave, "You left the party!", "Vous avez quitté la party !");
+        setMessage(Messages.Party_Left, " left the party!", " a quitté  la party !");
+        setMessage(Messages.Player_Offline, "The player is offline !", "Le joueur est hors ligne !");
+        setMessage(Messages.Command_Error, "Command is :", "La commande est :");
+        setMessage(Messages.Successful_Add, "Successfully adding ", "Ajout avec succès de ");
+        setMessage(Messages.Successful_Add_1, " for ", " pour ");
+        setMessage(Messages.Successful_Remove, "Successfully removed ", "Suppression avec succès de ");
+        setMessage(Messages.Successful_Remove_1, " for ", " pour ");
+        setMessage(Messages.Successful_Set, "Successfully set ", "Fixation avec succès de ");
+        setMessage(Messages.Successful_Set_1, " for ", " pour ");
+
         Logger.log(LoggerType.SUCCESS, "Messages successful updated");
     }
 

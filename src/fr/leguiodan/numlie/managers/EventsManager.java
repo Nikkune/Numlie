@@ -83,16 +83,7 @@ public class EventsManager implements Listener {
         EntityType[] HOSTILE_TYPE = new EntityType[]{EntityType.BLAZE, EntityType.CREEPER, EntityType.ELDER_GUARDIAN, EntityType.ENDERMITE, EntityType.EVOKER, EntityType.GHAST, EntityType.GUARDIAN, EntityType.HUSK, EntityType.MAGMA_CUBE, EntityType.PIG_ZOMBIE, EntityType.SHULKER, EntityType.SILVERFISH, EntityType.SKELETON, EntityType.SLIME, EntityType.SPIDER, EntityType.STRAY, EntityType.VEX, EntityType.VINDICATOR, EntityType.WITCH, EntityType.WITHER_SKELETON, EntityType.ZOMBIE, EntityType.ZOMBIE_VILLAGER, EntityType.CAVE_SPIDER, EntityType.ENDERMAN};
         List<EntityType> HOSTILE_LIST = Arrays.asList(HOSTILE_TYPE);
         if (killer != null) {
-            if (main.databaseManager.isInParty(killer)) {
-                if (main.databaseManager.isTheHost(killer)) {
-                    List<Player> playersOfParty = main.databaseManager.getAllPlayerOfParty(killer);
-                    for (Player player : playersOfParty) {
-                        updateAPlayer(death, HOSTILE_LIST, player);
-                    }
-                }
-            } else {
-                updateAPlayer(death, HOSTILE_LIST, killer);
-            }
+            updateAPlayer(death, HOSTILE_LIST, killer);
         }
     }
 
@@ -134,7 +125,7 @@ public class EventsManager implements Listener {
                                     player.sendMessage(ChatHandler.setPartyMessage() + ChatHandler.setChatMessage(chat_type, main, message, sender));
                                 }
                             } else {
-                                Player host = Bukkit.getPlayer(main.databaseManager.getHost(sender));
+                                Player host = Bukkit.getPlayer(main.databaseManager.getHostUUID(sender));
                                 List<Player> playersList = main.databaseManager.getAllPlayerOfParty(host);
                                 for (Player player : playersList) {
                                     player.sendMessage(ChatHandler.setPartyMessage() + ChatHandler.setChatMessage(chat_type, main, message, sender));

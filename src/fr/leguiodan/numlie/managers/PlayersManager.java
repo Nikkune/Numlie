@@ -5,8 +5,11 @@ import fr.leguiodan.numlie.utilities.enumerations.Messages;
 import fr.leguiodan.numlie.utilities.enumerations.Status;
 import fr.leguiodan.numlie.utilities.handlers.ChatHandler;
 import fr.leguiodan.numlie.utilities.handlers.ScoreboardsHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class PlayersManager {
     private final Main main;
@@ -17,7 +20,7 @@ public class PlayersManager {
 
     public void updatePlayerMin(Player player) {
         int[] playerStats = main.filesManager.getPlayersStats(player);
-        playerStats[4] = playerStats[4] + 1;
+        playerStats[3] = playerStats[3] + 1;
         main.filesManager.setPlayersStats(player, playerStats);
         updatePlayer(player);
     }
@@ -26,7 +29,7 @@ public class PlayersManager {
         int[] playerStats = main.filesManager.getPlayersStats(player);
         int xp = playerStats[0];
         int level = playerStats[1];
-        int status_id = playerStats[3];
+        int status_id = playerStats[2];
         final Status status = Status.idToStatus(status_id);
         final int xp_need = main.filesManager.getXpNeed(level);
         final double max_pv = main.filesManager.getMaxPv(level);
@@ -55,14 +58,26 @@ public class PlayersManager {
 
         playerStats[0] = xp;
         playerStats[1] = level;
-        playerStats[3] = status_id;
+        playerStats[2] = status_id;
         main.filesManager.setPlayersStats(player, playerStats);
         ScoreboardsHandler.manageScoreboard(player, main, ScoreboardsHandler.ManageType.Update);
     }
 
     public void entityKilled(Player player, int entity_level) {
-        String player_lang = main.filesManager.getPlayerLang(player);
         final int xp_win = main.filesManager.getXpWin(entity_level);
+        if (main.databaseManager.isInParty(player)) {
+            Player host = Bukkit.getPlayer(main.databaseManager.getHostUUID(player));
+            List<Player> players = main.databaseManager.getAllPlayerOfParty(host);
+            for (Player player1 : players) {
+                playerKill(player1, xp_win);
+            }
+        } else {
+            playerKill(player, xp_win);
+        }
+    }
+
+    private void playerKill(Player player, int xp_win) {
+        String player_lang = main.filesManager.getPlayerLang(player);
         int[] playerStats = main.filesManager.getPlayersStats(player);
         if (playerStats[1] < 100) {
             int xp = playerStats[0];
