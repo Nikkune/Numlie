@@ -54,10 +54,6 @@ public class ChatHandler {
         return Chat_Type.GLOBAL.getPrefix() + Chat_Type.GLOBAL.getColor();
     }
 
-    public static String setFriendMessage() {
-        return Chat_Type.FRIENDS.getPrefix() + Chat_Type.FRIENDS.getColor();
-    }
-
     public static String setPartyMessage() {
         return Chat_Type.PARTY.getPrefix() + Chat_Type.PARTY.getColor();
     }
@@ -75,8 +71,6 @@ public class ChatHandler {
             return Chat_Type.GLOBAL;
         } else if (Chat_Type.PARTY.getSelector().equalsIgnoreCase(selector)) {
             return Chat_Type.PARTY;
-        } else if (Chat_Type.FRIENDS.getSelector().equalsIgnoreCase(selector)) {
-            return Chat_Type.FRIENDS;
         } else if (Chat_Type.BROADCAST.getSelector().equalsIgnoreCase(selector)) {
             return Chat_Type.BROADCAST;
         } else {
@@ -98,8 +92,6 @@ public class ChatHandler {
                 return setWarningMessage();
             case SUCCESS:
                 return setSuccessMessage();
-            case FRIENDS:
-                return setFriendMessage();
             case PARTY:
                 return setPartyMessage();
             default:

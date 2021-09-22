@@ -85,12 +85,11 @@ public class FilesManager {
 
     public int[] getPlayersStats(Player player) {
         final String uuid = player.getUniqueId().toString();
-        int[] playerStats = new int[5];
+        int[] playerStats = new int[4];
         playerStats[0] = playersYaml.getInt("Players." + uuid + ".xp");
         playerStats[1] = playersYaml.getInt("Players." + uuid + ".level");
-        playerStats[2] = playersYaml.getInt("Players." + uuid + ".money");
-        playerStats[3] = playersYaml.getInt("Players." + uuid + ".status");
-        playerStats[4] = playersYaml.getInt("Players." + uuid + ".playtime");
+        playerStats[2] = playersYaml.getInt("Players." + uuid + ".status");
+        playerStats[3] = playersYaml.getInt("Players." + uuid + ".playtime");
         return playerStats;
     }
 
@@ -98,10 +97,29 @@ public class FilesManager {
         final String uuid = player.getUniqueId().toString();
         playersYaml.set("Players." + uuid + ".xp", playerStats[0]);
         playersYaml.set("Players." + uuid + ".level", playerStats[1]);
-        playersYaml.set("Players." + uuid + ".money", playerStats[2]);
-        playersYaml.set("Players." + uuid + ".status", playerStats[3]);
-        playersYaml.set("Players." + uuid + ".playtime", playerStats[4]);
+        playersYaml.set("Players." + uuid + ".status", playerStats[2]);
+        playersYaml.set("Players." + uuid + ".playtime", playerStats[3]);
         saveYaml(playersYaml, false);
+    }
+
+    public int getPlayerXp(Player player) {
+        final String uuid = player.getUniqueId().toString();
+        return playersYaml.getInt("Players." + uuid + ".xp");
+    }
+
+    public void setPlayerXp(Player player, int xp) {
+        final String uuid = player.getUniqueId().toString();
+        playersYaml.set("Players." + uuid + ".xp", xp);
+    }
+
+    public int getPlayerLevel(Player player) {
+        final String uuid = player.getUniqueId().toString();
+        return playersYaml.getInt("Players." + uuid + ".level");
+    }
+
+    public void setPlayerLevel(Player player, int level) {
+        final String uuid = player.getUniqueId().toString();
+        playersYaml.set("Players." + uuid + ".level", level);
     }
 
     public void statsUpdate(int level, int max_pv, int xp_need, int xp_win) {
@@ -180,9 +198,6 @@ public class FilesManager {
 
         messageYaml.set(key + "UILevel" + lang_en, "Level");
         messageYaml.set(key + "UILevel" + lang_fr, "Niveau");
-
-        messageYaml.set(key + "UIMoney" + lang_en, "Money");
-        messageYaml.set(key + "UIMoney" + lang_fr, "Argent");
 
         messageYaml.set(key + "UIPlaytime" + lang_en, "Playtime");
         messageYaml.set(key + "UIPlaytime" + lang_fr, "Temps De Jeu");
@@ -274,10 +289,6 @@ public class FilesManager {
 
     public YamlConfiguration getPlayersYaml() {
         return playersYaml;
-    }
-
-    public YamlConfiguration getStatsYaml() {
-        return statsYaml;
     }
 
     public YamlConfiguration getConfigYaml() {

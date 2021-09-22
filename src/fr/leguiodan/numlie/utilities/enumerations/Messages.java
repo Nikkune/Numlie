@@ -14,10 +14,7 @@ public enum Messages {
     Xp_Down("xpMinus"),
     Backup_Error("backupErr"),
     Backup_Success("backupOk"),
-    Delete_Error("deleteErr"),
-    Delete_Success("deleteOk"),
     UI_Level("UILevel"),
-    UI_Money("UIMoney"),
     UI_Playtime("UIPlaytime"),
     UI_Change_Lang("UIChangeLang"),
     UI_Change_Title("UIChangeTitle"),
@@ -26,7 +23,6 @@ public enum Messages {
     UI_Get_Link_Key("UIGetLinkKey"),
     Chat_Selector("ChatSelector"),
     Party_No("PartyNo"),
-    Party_Yes("PartyYes")
     ;
     final String key;
 

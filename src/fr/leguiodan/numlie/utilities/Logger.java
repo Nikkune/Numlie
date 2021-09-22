@@ -32,7 +32,7 @@ public class Logger {
 
     public static void log(LoggerType type, String message) {
         System.out.println(ColorsCodes.ANSI_PURPLE.getColorCode() + "[Numlie] " + type.getColors().getColorCode() + message + ColorsCodes.ANSI_RESET.getColorCode());
-        loggerYaml.set(time + " - " + message,"");
+        loggerYaml.set(time + " - " + message, "");
         try {
             loggerYaml.save(loggerFile);
         } catch (IOException e) {

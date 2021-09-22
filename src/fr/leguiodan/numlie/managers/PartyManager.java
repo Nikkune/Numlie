@@ -1,7 +1,6 @@
 package fr.leguiodan.numlie.managers;
 
 import fr.leguiodan.numlie.Main;
-import fr.leguiodan.numlie.utilities.enumerations.Chat_Type;
 import fr.leguiodan.numlie.utilities.enumerations.Messages;
 import fr.leguiodan.numlie.utilities.handlers.ChatHandler;
 import org.bukkit.Bukkit;
@@ -21,12 +20,19 @@ public class PartyManager {
     }
 
     public void partyInvite(Player host, String member) {
+        String playerLang = main.filesManager.getPlayerLang(host);
         Player invited = Bukkit.getPlayer(member);
-        if (invited != null) {
-            main.databaseManager.inviteParty(host, invited);
-            invited.sendMessage(ChatHandler.setErrorMessage() + ChatHandler.getMessageType(Chat_Type.INFO.getSelector()) + host.getDisplayName() + " vous a invité dans sa party !");
+        if (main.databaseManager.isInParty(host)) {
+            if (main.databaseManager.isTheHost(host)) {
+                if (invited != null) {
+                    main.databaseManager.inviteParty(host, invited);
+                    invited.sendMessage(ChatHandler.setErrorMessage() + host.getDisplayName() + " vous a invité dans sa party !");
+                } else {
+                    host.sendMessage(ChatHandler.setErrorMessage() + "Le Joueur n'est pas en ligne !");
+                }
+            }
         } else {
-            host.sendMessage(ChatHandler.setErrorMessage() + ChatHandler.getMessageType(Chat_Type.ERROR.getSelector()) + "Le Joueur n'est pas en ligne !");
+            host.sendMessage(ChatHandler.setWarningMessage() + main.filesManager.getMessage(Messages.Party_No, playerLang));
         }
     }
 
@@ -45,7 +51,7 @@ public class PartyManager {
             if (main.databaseManager.isTheHost(sender)) {
                 List<Player> playerList = main.databaseManager.getAllPlayerOfParty(sender);
                 for (Player player : playerList) {
-                    membersString.append(player.getDisplayName());
+                    membersString.append(player.getDisplayName()).append(" ");
                 }
             } else {
                 List<Player> playerList = main.databaseManager.getAllPlayerOfParty(Bukkit.getPlayerExact(main.databaseManager.getHost(sender)));
@@ -54,8 +60,7 @@ public class PartyManager {
                 }
             }
             return membersString.toString();
-        }
-        else {
+        } else {
             sender.sendMessage(ChatHandler.setWarningMessage() + main.filesManager.getMessage(Messages.Party_No, main.filesManager.getPlayerLang(sender)));
             return null;
         }

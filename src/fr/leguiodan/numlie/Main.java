@@ -1,5 +1,8 @@
 package fr.leguiodan.numlie;
 
+import fr.leguiodan.numlie.commands.nlvlCmds;
+import fr.leguiodan.numlie.commands.nxpCmds;
+import fr.leguiodan.numlie.commands.partyCmds;
 import fr.leguiodan.numlie.managers.*;
 import fr.leguiodan.numlie.utilities.Logger;
 import fr.leguiodan.numlie.utilities.database.DatabaseManager;
@@ -26,6 +29,9 @@ public class Main extends JavaPlugin {
         filesManager = new FilesManager(INSTANCE);
         filesManager.init();
         init();
+        getCommand("party").setExecutor(new partyCmds());
+        getCommand("nxp").setExecutor(new nxpCmds());
+        getCommand("nlvl").setExecutor(new nlvlCmds());
         Logger.log(LoggerType.NORMAL, "Hello !");
     }
 

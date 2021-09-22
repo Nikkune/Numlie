@@ -4,3 +4,13 @@ version: 0.1
 author: Nikkune
 description: Plugin for Leguiodan minecraft server.
 database: true
+commands:
+  party:
+    description: Manage Party
+    usage: "Commands is : /party [create,leave,accept,refuse,list] or /friends invite {player}"
+  nxp:
+    description: Manage Numlie Xp
+    usage: "Commands is : /nxp {player} [set,add,remove] {amount} [level,xp]"
+  nlvl:
+    description: Manage Numlie Level
+    usage: "Commands is : /nlvl {player} {level}"

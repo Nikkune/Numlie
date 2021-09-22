@@ -6,7 +6,6 @@ import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 public enum Chat_Type {
     GLOBAL("[G]", "!g", ChatColor.WHITE, null),
     PARTY("[P]", "!p", ChatColor.RED, null),
-    FRIENDS("[F]", "!f", ChatColor.YELLOW, null),
     INFO("[!]", "null", ChatColor.LIGHT_PURPLE, null),
     WARNING("[\u26a0]", "null", ChatColor.LIGHT_PURPLE, null),
     ERROR("[\u26a0]", "null", ChatColor.DARK_RED, null),

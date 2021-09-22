@@ -25,7 +25,10 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class EventsManager implements Listener {
 
@@ -45,7 +48,7 @@ public class EventsManager implements Listener {
         main.databaseManager.createAccount(player);
         main.databaseManager.createPlayerCash(player);
         main.databaseManager.setOnline(player.getUniqueId().toString());
-        ScoreboardsHandler.createScoreboard(player, main);
+        ScoreboardsHandler.manageScoreboard(player, main, ScoreboardsHandler.ManageType.Make);
         final int task = Bukkit.getScheduler().scheduleSyncRepeatingTask(main, () -> main.playersManager.updatePlayerMin(player), 20L * 60, 20L * 60);
         final int task2 = Bukkit.getScheduler().scheduleSyncRepeatingTask(main, () -> main.playersManager.updatePlayer(player), 0L, 20L);
         taskMin_map.put(player, task);
@@ -145,22 +148,6 @@ public class EventsManager implements Listener {
                     case GLOBAL:
                     case BROADCAST:
                         event.setFormat(ChatHandler.setMessageViaType(chat_type) + ChatHandler.setChatMessage(chat_type, main, message, sender));
-                        break;
-                    case FRIENDS:
-                        List<String> friends = main.databaseManager.getPlayerFriends(sender);
-                        List<Player> onlineFriends = new ArrayList<>();
-                        if (friends != null) {
-                            for (String friend : friends) {
-                                onlineFriends.add(Bukkit.getPlayerExact(friend));
-                            }
-                            if (!onlineFriends.isEmpty()) {
-                                for (Player friend : onlineFriends) {
-                                    friend.sendMessage(ChatHandler.setFriendMessage() + ChatHandler.setChatMessage(chat_type, main, message, sender));
-                                }
-                            } else {
-                                event.setCancelled(true);
-                            }
-                        }
                         break;
                     default:
                         event.setCancelled(true);
